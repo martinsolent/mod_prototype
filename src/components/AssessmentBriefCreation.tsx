@@ -3,7 +3,7 @@ import { HelpCircle, Download, CheckCircle } from 'lucide-react';
 import { AssessmentData } from '../App';
 
 interface AssessmentBriefCreationProps {
-  onNavigate: (page: 'brief-creation' | 'peer-review' | 'internal-moderation' | 'feedback') => void;
+  onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
   assessmentData: AssessmentData;
   updateAssessmentData: (updates: Partial<AssessmentData>) => void;
 }
@@ -116,7 +116,7 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-[#4a5568] text-white px-6 py-3">
-        <h1>COM416_A_SEM1_2025/26: External examiner feedback</h1>
+        <h1>Assessment brief and moderation workflow Prototype</h1>
       </header>
 
       {/* Navigation Tabs */}
@@ -143,6 +143,12 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Peer Review
+            </button>
+            <button 
+              onClick={() => onNavigate('sample-selection')}
+              className="py-4 text-[#0066cc] hover:text-[#004499]"
+            >
+              Sample Selection
             </button>
             <button 
               onClick={() => onNavigate('internal-moderation')}

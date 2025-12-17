@@ -3,7 +3,7 @@ import { HelpCircle, Download, CheckCircle, AlertCircle } from 'lucide-react';
 import { AssessmentData, StudentSample } from '../App';
 
 interface InternalModerationProps {
-  onNavigate: (page: 'brief-creation' | 'peer-review' | 'internal-moderation' | 'feedback') => void;
+  onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
   assessmentData: AssessmentData;
   updateAssessmentData: (updates: Partial<AssessmentData>) => void;
 }
@@ -40,7 +40,7 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
     { id: 'ST001238', firstName: 'Ethan Davis', grade: '35', workLink: '#' }
   ]);
 
-  const [moderationStatus, setModerationStatus] = useState<'draft' | 'sent-to-moderator' | 'sent-back' | 'moderator-approved' | 'sent-to-external'>('draft');
+  const [moderationStatus, setModerationStatus] = useState<'draft' | 'sent-to-moderator' | 'sent-back' | 'moderator-approved' | 'sent-to-external'>('sent-to-moderator');
   const [moderatorComments, setModeratorComments] = useState('');
 
   const handleSendToModerator = () => {
@@ -121,7 +121,7 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-[#4a5568] text-white px-6 py-3">
-        <h1>COM416_A_SEM1_2025/26: External examiner feedback</h1>
+        <h1>Assessment brief and moderation workflow Prototype</h1>
       </header>
 
       {/* Navigation Tabs */}
@@ -148,6 +148,12 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
               className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Peer Review
+            </button>
+            <button 
+              onClick={() => onNavigate('sample-selection')}
+              className="py-4 text-[#0066cc] hover:text-[#004499]"
+            >
+              Sample Selection
             </button>
             <button 
               onClick={() => onNavigate('internal-moderation')}
@@ -523,16 +529,16 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
             <div className="mb-8 p-6 bg-blue-50 border-l-4 border-blue-600 rounded">
               <h3 className="text-blue-800 mb-4">Internal Moderator Actions</h3>
               <p className="text-sm text-blue-700 mb-4">
-                As the Internal Moderator, you can either sign off this moderation or send it back to the Module Leader with comments for action.
+                As the Internal Moderator, you can either sign off this moderation or request clarification from the Module Leader.
               </p>
               
               <div className="mb-4">
-                <label className="block mb-2 text-sm">Comments (required if sending back):</label>
+                <label className="block mb-2 text-sm">Comments for Module Leader (required if requesting clarification):</label>
                 <textarea
                   value={moderatorComments}
                   onChange={(e) => setModeratorComments(e.target.value)}
                   className="w-full h-32 p-3 border border-blue-300 bg-white"
-                  placeholder="Enter any comments or concerns that need to be addressed..."
+                  placeholder="Enter any comments, questions, or concerns that need clarification or action from the Module Leader..."
                 />
               </div>
 
@@ -547,7 +553,7 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
                   onClick={handleModeratorSendBack}
                   className="px-6 py-3 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors"
                 >
-                  Send Back to Module Leader
+                  Request Clarification from Module Leader
                 </button>
               </div>
             </div>

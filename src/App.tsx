@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FeedbackForm } from './components/FeedbackForm';
 import { PeerReview } from './components/PeerReview';
 import { AssessmentBriefCreation } from './components/AssessmentBriefCreation';
+import { SampleSelection } from './components/SampleSelection';
 import { InternalModeration } from './components/InternalModeration';
 
 // Shared data structure for all pages
@@ -97,7 +98,7 @@ export interface AssessmentData {
 }
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<'brief-creation' | 'peer-review' | 'internal-moderation' | 'feedback'>('brief-creation');
+  const [currentPage, setCurrentPage] = useState<'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback'>('brief-creation');
   
   // Shared state for all assessment data
   const [assessmentData, setAssessmentData] = useState<AssessmentData>({
@@ -206,6 +207,12 @@ export default function App() {
       ) : currentPage === 'peer-review' ? (
         <PeerReview 
           onNavigate={setCurrentPage} 
+          assessmentData={assessmentData}
+          updateAssessmentData={updateAssessmentData}
+        />
+      ) : currentPage === 'sample-selection' ? (
+        <SampleSelection 
+          onNavigate={setCurrentPage}
           assessmentData={assessmentData}
           updateAssessmentData={updateAssessmentData}
         />
