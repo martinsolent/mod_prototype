@@ -1,0 +1,162 @@
+Here are step-by-step instructions to deploy your learning management system as a static website on GitHub:
+
+Step 1: Create a GitHub Repository
+Go to GitHub and sign in (or create an account if you don't have one)
+Click the "+" icon in the top right corner and select "New repository"
+Name your repository (e.g., lms-assessment-workflow)
+Choose Public (required for free GitHub Pages hosting)
+Do NOT initialize with README, .gitignore, or license
+Click "Create repository"
+Step 2: Prepare Your Project Files
+Download all your project files from Figma Make to your local computer:
+
+Create a new folder on your computer (e.g., lms-project)
+Copy all these files into that folder:
+/App.tsx
+/index.html
+/package.json
+/vite.config.ts
+/tsconfig.json
+/tsconfig.app.json
+/tsconfig.node.json
+/styles/globals.css
+/components/ folder (with all component files)
+/imports/ folder (if you have any imported assets)
+Step 3: Initialize Git and Push to GitHub
+Open Terminal (Mac) or Command Prompt/PowerShell (Windows), navigate to your project folder, and run these commands:
+
+# Navigate to your project folder
+cd path/to/lms-project
+
+# Initialize git repository
+git init
+
+# Add all files
+git add .
+
+# Commit the files
+git commit -m "Initial commit - LMS Assessment Workflow"
+
+# Add your GitHub repository as remote (replace YOUR-USERNAME and YOUR-REPO-NAME)
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
+
+# Push to GitHub
+git branch -M main
+git push -u origin main
+Step 4: Configure for GitHub Pages
+You need to update your vite.config.ts file. Add a base property:
+
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  base: '/YOUR-REPO-NAME/', // Replace with your actual repository name
+})
+For example, if your repo is named lms-assessment-workflow, use:
+
+base: '/lms-assessment-workflow/',
+Commit this change:
+
+git add vite.config.ts
+git commit -m "Configure base path for GitHub Pages"
+git push
+Step 5: Deploy to GitHub Pages
+Option A: Using GitHub Actions (Recommended - Automatic)
+Create a .github/workflows folder in your project
+Create a file called deploy.yml inside it with this content:
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+Commit and push:
+git add .github/workflows/deploy.yml
+git commit -m "Add GitHub Pages deployment workflow"
+git push
+Go to your GitHub repository settings:
+
+Click Settings tab
+Click Pages in the left sidebar
+Under "Source", select GitHub Actions
+Your site will automatically deploy! Check the Actions tab to see the progress.
+
+Option B: Manual Deployment (Alternative)
+If you prefer manual deployment:
+
+Install the gh-pages package locally:
+npm install --save-dev gh-pages
+Add these scripts to your package.json:
+{
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  }
+}
+Run the deployment command:
+npm run deploy
+Go to your repository Settings → Pages → Source, and select the gh-pages branch.
+Step 6: Access Your Website
+Your website will be available at:
+
+https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+For example: https://johnsmith.github.io/lms-assessment-workflow/
+
+Important Notes
+First deployment takes 5-10 minutes - be patient!
+The site updates automatically when you push to the main branch (with Option A)
+All data is stored in browser localStorage - it's not a real database
+Make sure your repository is Public for free GitHub Pages hosting
+Troubleshooting
+Blank page after deployment?
+
+Check that you set the correct base path in vite.config.ts
+Check the browser console for errors (F12)
+404 error?
+
+Verify GitHub Pages is enabled in Settings → Pages
+Check that the deployment completed successfully in the Actions tab
+Need to update the site?
+
+Just make changes locally, commit, and push to GitHub
+With GitHub Actions, it deploys automatically!
+Would you like me to create the vite.config.ts and deploy.yml files for you?
