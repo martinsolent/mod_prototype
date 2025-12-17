@@ -1,85 +1,78 @@
 ```mermaid
-
-```mermaid
 flowchart TD
-    Start([Start: New Assessment]) --> Brief[Assessment Brief Creation]
+    Start([Start]) --> AB[Assessment Brief Creation]
     
-    Brief --> |Module Leader creates brief| FillBrief[Fill in Assessment Details:<br/>- Module Information<br/>- Assessment Type & Criteria<br/>- Rubric/Grading Scale<br/>- Learning Outcomes<br/>- AI Policy]
+    AB --> AB1[Module Leader creates<br/>assessment brief]
+    AB1 --> AB2[Fill in module information,<br/>assessment details,<br/>learning outcomes]
+    AB2 --> AB3[Assign Internal<br/>Peer Reviewer]
+    AB3 --> AB4{Brief<br/>Complete?}
+    AB4 -->|No| AB1
+    AB4 -->|Yes| AB5[Submit for<br/>Peer Review]
+    AB5 --> PR[Peer Review Page]
     
-    FillBrief --> SelectReviewer[Select Internal Peer Reviewer]
-    SelectReviewer --> SaveDraft{Save as Draft?}
-    SaveDraft --> |Yes| Draft[(Stored as Draft)]
-    Draft --> |Continue Later| FillBrief
-    SaveDraft --> |No| SubmitPR[Submit for Peer Review]
+    PR --> PR1[Internal Peer Reviewer<br/>reviews assessment brief]
+    PR1 --> PR2[Complete checklist:<br/>- Briefing sheet<br/>- Compliance<br/>- Instructions clarity<br/>- Criteria clarity<br/>- Task appropriateness<br/>- Special provisions]
+    PR2 --> PR3[Add comments and<br/>recommendations]
+    PR3 --> PR4{Peer Review<br/>Approved?}
+    PR4 -->|No - Needs Changes| AB1
+    PR4 -->|Yes| PR5[Module Leader signs off<br/>Peer Reviewer signs off]
+    PR5 --> PR6[Send to Sample Selection]
+    PR6 --> SS[Sample Selection Page]
     
-    SubmitPR --> |Email notification sent| PeerReview[Peer Review Page]
+    SS --> SS1[Course Leader selects<br/>student samples after grading]
+    SS1 --> SS2[Select representative samples:<br/>- 10% of submissions<br/>- Min 5, Max 15<br/>- Include borderline cases]
+    SS2 --> SS3[View student grades<br/>and feedback]
+    SS3 --> SS4{Samples<br/>Selected?}
+    SS4 -->|No| SS1
+    SS4 -->|Yes| SS5[Send to Internal Moderator<br/>📧 Email notification sent]
+    SS5 --> IM[Internal Moderation Page]
     
-    PeerReview --> |Peer Reviewer receives notification| ReviewBrief[Internal Peer Reviewer<br/>Reviews Assessment Brief]
+    IM --> IM1[Status: Awaiting Internal<br/>Moderation Review]
+    IM1 --> IM2[Internal Moderator<br/>reviews samples]
+    IM2 --> IM3[Reviews grades and<br/>feedback comments]
+    IM3 --> IM4{Clarification<br/>Needed?}
     
-    ReviewBrief --> CheckBrief{Brief Quality<br/>Acceptable?}
+    IM4 -->|Yes| IM5[Request Clarification<br/>from Module Leader]
+    IM5 --> IM6[📧 Email sent to<br/>Module Leader]
+    IM6 --> IM7[Module Leader responds<br/>to clarification request]
+    IM7 --> IM8{Response<br/>Adequate?}
+    IM8 -->|No| IM5
+    IM8 -->|Yes| IM9[Acknowledge response]
+    IM9 --> IM2
     
-    CheckBrief --> |Issues Found| RequestChanges[Request Changes:<br/>- Add comments<br/>- Specify issues]
-    RequestChanges --> |Notification to Module Leader| FillBrief
+    IM4 -->|No| IM10[Complete moderation review:<br/>- Assess grade appropriateness<br/>- Add comments/actions]
+    IM10 --> IM11[Internal Moderator signs]
+    IM11 --> IM12[Module Leader signs<br/>acknowledgement]
+    IM12 --> IM13{Franchise<br/>Partner?}
+    IM13 -->|Yes| IM14[Franchise Partner signs]
+    IM14 --> IM15{External<br/>Moderation<br/>Required?}
+    IM13 -->|No| IM15
     
-    CheckBrief --> |Approved| SignOffPeer[Peer Reviewer Signs Off:<br/>- Enter name<br/>- Enter date<br/>- Submit sign-off]
+    IM15 -->|No| End([End - Process Complete])
+    IM15 -->|Yes| IM16[Send to External Examiner<br/>📧 Email notification sent]
+    IM16 --> EE[External Examiner Page]
     
-    SignOffPeer --> |Notification to Module Leader| BriefApproved[Assessment Brief Approved<br/>& Ready to Publish]
+    EE --> EE1[External Examiner<br/>receives notification]
+    EE1 --> EE2[View assessment details<br/>and moderated samples]
+    EE2 --> EE3[Review student work<br/>and feedback]
+    EE3 --> EE4[Answer review questions:<br/>1. Assessment alignment<br/>2. Standards consistency<br/>3. Recommendations]
+    EE4 --> EE5[Provide additional comments]
+    EE5 --> EE6[Mark review as complete]
+    EE6 --> EE7[External Examiner signs<br/>and dates]
+    EE7 --> EE8{Review<br/>Complete?}
+    EE8 -->|No| EE4
+    EE8 -->|Yes| EE9[Submit External<br/>Examiner Report]
+    EE9 --> EE10[Download PDF Report]
+    EE10 --> End
     
-    BriefApproved --> PublishStudents[Publish Brief to Students]
-    PublishStudents --> StudentsWork[Students Complete Assessment]
-    StudentsWork --> Marking[Module Team Marks Assessments]
-    
-    Marking --> InternalMod[Internal Moderation Page]
-    
-    InternalMod --> SelectSamples[Internal Moderator<br/>Selects Student Samples:<br/>- High marks<br/>- Borderline cases<br/>- Failed work]
-    
-    SelectSamples --> ModeratorReview[Internal Moderator Reviews:<br/>- Marking consistency<br/>- Assessment standards<br/>- Grading fairness]
-    
-    ModeratorReview --> ModeratorSign[Internal Moderator Signs Off:<br/>- Enter name<br/>- Enter date]
-    
-    ModeratorSign --> ModuleLeaderReview[Module Leader Reviews<br/>Moderation Feedback]
-    
-    ModuleLeaderReview --> MLSign[Module Leader Signs Off:<br/>- Enter name<br/>- Enter date]
-    
-    MLSign --> FranchiseCheck{Franchise<br/>Partner Module?}
-    
-    FranchiseCheck --> |Yes| FPSign[Franchise Partner<br/>Solent Moderator Signs Off:<br/>- Enter name<br/>- Enter date]
-    FranchiseCheck --> |No| SubmitEE[Submit to External Examiner]
-    FPSign --> SubmitEE
-    
-    SubmitEE --> |Email notification sent| ExternalExam[External Examiner Page]
-    
-    ExternalExam --> |External Examiner receives notification| EEReview[External Examiner Reviews:<br/>- Assessment Brief<br/>- Student Samples<br/>- Internal Moderation<br/>- Marking Standards]
-    
-    EEReview --> EEFeedback[Provide Feedback on:<br/>- Assessment appropriateness<br/>- Academic standards<br/>- Parity with sector<br/>- Student achievement<br/>- Recommendations]
-    
-    EEFeedback --> EEQuestions[Complete Quality Questions:<br/>- Module information accuracy<br/>- Assessment alignment<br/>- Learning outcomes<br/>- Student support]
-    
-    EEQuestions --> EESummary[Write Feedback Summary<br/>& Comments]
-    
-    EESummary --> EEComplete{Mark as<br/>Completed?}
-    
-    EEComplete --> |No| SaveEEDraft[(Save Progress)]
-    SaveEEDraft --> |Continue Later| EEFeedback
-    
-    EEComplete --> |Yes| EESignOff[External Examiner Signs Off:<br/>- Enter name<br/>- Enter date<br/>- Submit form]
-    
-    EESignOff --> |Notification sent| ModuleTeam[Module Team Receives<br/>External Examiner Report]
-    
-    ModuleTeam --> Review[Review Feedback &<br/>Implement Improvements]
-    
-    Review --> NextCycle[Apply Learnings to<br/>Next Assessment Cycle]
-    
-    NextCycle --> End([Assessment Cycle Complete])
-    
-    style Start fill:#4a5568,stroke:#2d3748,color:#fff
-    style Brief fill:#e3f2fd,stroke:#1976d2,color:#000
-    style PeerReview fill:#fff3e0,stroke:#f57c00,color:#000
-    style InternalMod fill:#f3e5f5,stroke:#7b1fa2,color:#000
-    style ExternalExam fill:#e8f5e9,stroke:#388e3c,color:#000
-    style End fill:#4a5568,stroke:#2d3748,color:#fff
-    style BriefApproved fill:#c8e6c9,stroke:#4caf50,color:#000
-    style ModuleTeam fill:#c8e6c9,stroke:#4caf50,color:#000
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style AB fill:#E6F3FF
+    style PR fill:#E6F3FF
+    style SS fill:#FFF9E6
+    style IM fill:#FFE6F0
+    style EE fill:#F0E6FF
+    style IM5 fill:#FFE6E6
+    style IM6 fill:#FFE6E6
+    style IM7 fill:#FFE6E6
 ```
-
-    ```
