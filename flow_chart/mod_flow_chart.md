@@ -1,6 +1,4 @@
 ```mermaid
-
-```mermaid
 flowchart TD
     Start([Start: New Assessment]) --> Brief[Assessment Brief Creation]
     
@@ -81,5 +79,3 @@ flowchart TD
     style BriefApproved fill:#c8e6c9,stroke:#4caf50,color:#000
     style ModuleTeam fill:#c8e6c9,stroke:#4caf50,color:#000
 ```
-
-    ```
