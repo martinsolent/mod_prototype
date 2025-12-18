@@ -18,19 +18,40 @@
  --->
   
 
+## LMS Assessment Workflow - Complete Process Flow
+
+This document provides a comprehensive overview of the entire assessment workflow across all pages and views in the Learning Management System.
+
 ## Workflow Overview
 
-The system implements a complete assessment lifecycle from brief creation through external examination, with multiple approval stages and feedback loops.
+The system implements **TWO DISTINCT WORKFLOWS** that occur at different points in the academic lifecycle:
 
-## Complete Workflow Flowchart
+### **Workflow A: Pre-Assessment (Before Student Work)**
+Assessment Brief Creation → Peer Review → Approval
+
+This workflow occurs **before students begin their work**. It ensures the assessment design is appropriate, meets academic standards, and is properly reviewed.
+
+### **Workflow B: Post-Assessment (After Student Work is Marked)**
+Sample Selection → Internal Moderation → External Examination
+
+This workflow occurs **after students have completed the semester, submitted work, and had it marked**. It ensures marking consistency, grading standards, and academic quality assurance.
+
+---
+
+## Workflow A: Pre-Assessment Process (Assessment Design & Approval)
+
+### Timeline
+**Occurs: Before semester begins / Before students start work**
+
+### Flowchart - Pre-Assessment Workflow
 
 ```mermaid
 flowchart TD
-    Start([Start: Module Leader]) --> A1[Page 1: Assessment Brief Creation]
+    Start([Start: Module Leader<br/>Planning Assessment]) --> A1[Page 1: Assessment Brief Creation]
     
     A1 --> A2{ML Submits<br/>Brief for<br/>Peer Review?}
-    A2 -->|No| A1
-    A2 -->|Yes| B1[Page 2: Peer Review]
+    A2 -->|No - Continue Editing| A1
+    A2 -->|Yes - Ready for Review| B1[Page 2: Peer Review]
     
     %% PEER REVIEW WORKFLOW
     B1 --> B2[View: Peer Reviewer View]
@@ -38,254 +59,273 @@ flowchart TD
     
     B3 -->|Send Back for Amendment| B4[View: ML - Sent Back for Amendment]
     B4 --> B5[ML Reviews Peer Feedback]
-    B5 --> B6[ML Makes Amendments]
-    B6 --> B7[ML Resubmits]
+    B5 --> B6[ML Makes Amendments to Brief]
+    B6 --> B7[ML Resubmits Amended Brief]
     B7 --> B8[View: ML - Resubmitted]
     B8 --> B2
     
-    B3 -->|Approve| B9[View: ML - Signed Off]
-    B9 --> C1[Page 3: Sample Selection]
+    B3 -->|Approve Brief| B9[View: ML - Signed Off]
+    B9 --> End1([Assessment Brief Approved<br/>Ready for Semester])
     
-    %% SAMPLE SELECTION
-    C1 --> C2[ML Selects Student Samples]
-    C2 --> C3[ML Assigns Internal Moderator]
-    C3 --> C4{ML Submits<br/>for Internal<br/>Moderation?}
-    C4 -->|No| C1
-    C4 -->|Yes| D1[Page 4: Internal Moderation]
-    
-    %% INTERNAL MODERATION WORKFLOW
-    D1 --> D2[View: Internal Moderator View]
-    D2 --> D3[IM Reviews Samples & Grading]
-    D3 --> D4{IM Decision}
-    
-    D4 -->|Request Clarification| D5[IM Submits Questions]
-    D5 --> D6[View: ML - Sent Back for Clarification]
-    D6 --> D7[ML Provides Response]
-    D7 --> D8{ML Submits<br/>Clarification?}
-    D8 -->|No| D6
-    D8 -->|Yes| D2
-    
-    D4 -->|Approve| D9[IM Signs Off]
-    D9 --> D10[View: ML - Signed Off]
-    D10 --> D11[ML Reviews & Signs Off]
-    D11 --> E1[Page 5: External Examiner]
-    
-    %% EXTERNAL EXAMINER WORKFLOW
-    E1 --> E2[View: External Examiner View]
-    E2 --> E3[EE Reviews Student Samples]
-    E3 --> E4[EE Reviews Internal Moderation]
-    E4 --> E5[EE Answers Assessment Questions]
-    E5 --> E6[EE Provides Feedback Comments]
-    E6 --> E7{EE Completes<br/>& Submits<br/>Report?}
-    E7 -->|No| E2
-    E7 -->|Yes| E8[View: Course Leader - Completed Report]
-    
-    E8 --> E9[CL Reviews Complete Report]
-    E9 --> E10[CL Downloads PDF]
-    E10 --> E11{CL Acknowledges<br/>Receipt?}
-    E11 -->|No| E8
-    E11 -->|Yes| End([Assessment Workflow Complete])
+    End1 -.->|Semester Happens| Students[Students Complete Semester<br/>Submit Work<br/>Work is Marked]
+    Students -.->|Work Marked| Start2([Begin Workflow B:<br/>Post-Assessment])
     
     %% STYLING
     classDef briefStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef peerStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef decisionStyle fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    classDef viewYellow fill:#fff9e6,stroke:#ff9800,stroke-width:2px
+    classDef viewBlue fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    classDef viewGreen fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+    classDef pauseStyle fill:#f5f5f5,stroke:#666,stroke-width:2px,stroke-dasharray: 5 5
+    
+    class A1,A2 briefStyle
+    class B1,B2,B3,B9 peerStyle
+    class B4 viewYellow
+    class B8 viewBlue
+    class A2,B3 decisionStyle
+    class Students,End1,Start2 pauseStyle
+```
+
+### Pre-Assessment Stages
+
+#### **Stage 1: Assessment Brief Creation**
+- **Actor:** Module Leader (ML)
+- **Timing:** Before semester begins
+- **Purpose:** Design and document the assessment
+- **Key Actions:**
+  - Fill in module information (code, title, level, etc.)
+  - Define assessment type and requirements
+  - Set learning outcomes
+  - Upload assessment brief document
+  - Submit for peer review
+
+#### **Stage 2: Peer Review** (4 Views)
+
+**2.1 Peer Reviewer View**
+- **Actor:** Peer Reviewer
+- **Timing:** After ML submits brief
+- **Purpose:** Quality assurance of assessment design
+- **Key Actions:**
+  - Review assessment brief for appropriateness
+  - Check alignment with learning outcomes
+  - Verify academic standards
+  - Answer review questions
+  - **Decision:** Approve OR Send back for amendment
+
+**2.2 ML: Sent Back for Amendment** (Yellow Theme)
+- **Actor:** Module Leader
+- **Timing:** If peer reviewer requests changes
+- **Purpose:** Address peer reviewer concerns
+- **Key Actions:**
+  - Read peer reviewer feedback
+  - Revise assessment brief
+  - Make necessary amendments
+  - Respond to comments
+  - Resubmit amended brief
+
+**2.3 ML: Resubmitted** (Blue Theme)
+- **Actor:** Peer Reviewer (re-reviewing)
+- **Timing:** After ML resubmits
+- **Purpose:** Verify amendments address feedback
+- **Key Actions:**
+  - Review changes made by ML
+  - Verify concerns addressed
+  - **Decision:** Approve OR Send back again
+
+**2.4 ML: Signed Off** (Green Theme)
+- **Actor:** Module Leader (viewing approval)
+- **Timing:** After peer approval
+- **Purpose:** Confirmation and proceed with semester
+- **Key Actions:**
+  - View peer reviewer approval
+  - Download approved brief
+  - **Assessment is now approved for use in semester**
+
+---
+
+## Workflow B: Post-Assessment Process (Marking Quality Assurance)
+
+### Timeline
+**Occurs: After semester ends, work is submitted and marked**
+
+### Flowchart - Post-Assessment Workflow
+
+```mermaid
+flowchart TD
+    Start([Start: Semester Complete<br/>All Work Marked]) --> C1[Page 3: Sample Selection]
+    
+    %% SAMPLE SELECTION
+    C1 --> C2[ML Reviews All Marked Work]
+    C2 --> C3[ML Selects Student Samples<br/>Across Grade Range]
+    C3 --> C4[ML Assigns Internal Moderator]
+    C4 --> C5{ML Submits<br/>for Internal<br/>Moderation?}
+    C5 -->|No - Continue Selecting| C1
+    C5 -->|Yes - Ready for Moderation| D1[Page 4: Internal Moderation]
+    
+    %% INTERNAL MODERATION WORKFLOW
+    D1 --> D2[View: Internal Moderator View]
+    D2 --> D3[IM Reviews Sample Work & Marking]
+    D3 --> D4{IM Decision}
+    
+    D4 -->|Request Clarification| D5[IM Submits Questions about Marking]
+    D5 --> D6[View: ML - Sent Back for Clarification]
+    D6 --> D7[ML Provides Clarification Response]
+    D7 --> D8{ML Submits<br/>Clarification?}
+    D8 -->|No - Continue Editing| D6
+    D8 -->|Yes - Submitted| D2
+    
+    D4 -->|Approve Marking Standards| D9[IM Signs Off]
+    D9 --> D10[View: ML - Signed Off]
+    D10 --> D11[ML Reviews IM Approval]
+    D11 --> D12[ML Countersigns]
+    D12 --> E1[Page 5: External Examiner]
+    
+    %% EXTERNAL EXAMINER WORKFLOW
+    E1 --> E2[View: External Examiner View]
+    E2 --> E3[EE Reviews Student Sample Work]
+    E3 --> E4[EE Reviews Marking & Feedback]
+    E4 --> E5[EE Reviews Internal Moderation]
+    E5 --> E6[EE Answers Assessment Questions]
+    E6 --> E7[EE Provides Feedback Comments]
+    E7 --> E8{EE Completes<br/>& Submits<br/>Report?}
+    E8 -->|No - Continue Reviewing| E2
+    E8 -->|Yes - Submit Report| E9[View: Course Leader - Completed Report]
+    
+    E9 --> E10[CL Reviews Complete Report]
+    E10 --> E11[CL Downloads PDF]
+    E11 --> E12{CL Acknowledges<br/>Receipt?}
+    E12 -->|No - Continue Reviewing| E9
+    E12 -->|Yes - Confirm| End([Assessment Process Complete<br/>Quality Assured])
+    
+    %% STYLING
     classDef sampleStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
     classDef moderationStyle fill:#fff3e0,stroke:#f57c00,stroke-width:2px
     classDef examinerStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px
     classDef decisionStyle fill:#fff9c4,stroke:#f57f17,stroke-width:3px
     classDef viewYellow fill:#fff9e6,stroke:#ff9800,stroke-width:2px
     classDef viewGreen fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
-    classDef viewBlue fill:#e3f2fd,stroke:#2196f3,stroke-width:2px
+    classDef pauseStyle fill:#f5f5f5,stroke:#666,stroke-width:2px,stroke-dasharray: 5 5
     
-    class A1,A2 briefStyle
-    class B1,B2,B3,B9 peerStyle
-    class B4 viewYellow
-    class B8 viewBlue
-    class C1,C2,C3,C4 sampleStyle
-    class D1,D2,D3,D4,D10,D11 moderationStyle
+    class C1,C2,C3,C4,C5 sampleStyle
+    class D1,D2,D3,D4,D10,D11,D12 moderationStyle
     class D6 viewYellow
-    class E1,E2,E3,E4,E5,E6,E7,E8,E9,E10,E11 examinerStyle
-    class A2,B3,C4,D4,D8,E7,E11 decisionStyle
+    class E1,E2,E3,E4,E5,E6,E7,E8,E9,E10,E11,E12 examinerStyle
+    class C5,D4,D8,E8,E12 decisionStyle
+    class Start,End pauseStyle
 ```
 
-## Detailed Workflow Stages
+### Post-Assessment Stages
 
-### **Stage 1: Assessment Brief Creation**
-- **Actor:** Module Leader (ML)
-- **Purpose:** Create and define the assessment
-- **Key Actions:**
-  - Fill in module information
-  - Define assessment details
-  - Upload assessment brief document
-  - Submit for peer review
-
----
-
-### **Stage 2: Peer Review** (4 Views)
-
-#### **2.1 Peer Reviewer View**
-- **Actor:** Peer Reviewer
-- **Purpose:** Review assessment brief for quality and compliance
-- **Key Actions:**
-  - Review module information
-  - Answer review questions
-  - Provide feedback comments
-  - **Decision:** Approve OR Send back for amendment
-
-#### **2.2 ML: Sent Back for Amendment** (Yellow Theme)
+#### **Stage 3: Sample Selection**
 - **Actor:** Module Leader
-- **Purpose:** Address peer reviewer feedback
+- **Timing:** After all student work is marked
+- **Purpose:** Select representative samples for quality review
 - **Key Actions:**
-  - Read peer reviewer feedback
-  - Make necessary amendments
-  - Respond to comments
-  - Resubmit amended brief
-
-#### **2.3 ML: Resubmitted** (Blue Theme)
-- **Actor:** Peer Reviewer (reviewing resubmission)
-- **Purpose:** Review amended assessment brief
-- **Key Actions:**
-  - Review changes made by ML
-  - Verify amendments address feedback
-  - **Decision:** Approve OR Send back again
-
-#### **2.4 ML: Signed Off** (Green Theme)
-- **Actor:** Module Leader (viewing approval)
-- **Purpose:** Proceed with approved assessment
-- **Key Actions:**
-  - View peer reviewer approval
-  - Download approved brief
-  - Proceed to sample selection
-
----
-
-### **Stage 3: Sample Selection**
-- **Actor:** Module Leader
-- **Purpose:** Select student work samples for moderation
-- **Key Actions:**
-  - Review student submissions list
-  - Select samples across grade ranges
+  - Review complete list of student submissions
+  - Select samples across grade ranges (high, middle, low, borderline)
+  - Ensure representative sample of marking
   - Assign Internal Moderator
   - Submit for internal moderation
 
----
+#### **Stage 4: Internal Moderation** (3 Views)
 
-### **Stage 4: Internal Moderation** (3 Views)
-
-#### **4.1 Internal Moderator View** (Blue Theme)
+**4.1 Internal Moderator View** (Blue Theme)
 - **Actor:** Internal Moderator (IM)
-- **Purpose:** Review grading consistency and standards
+- **Timing:** After samples selected
+- **Purpose:** Review marking consistency and standards
 - **Key Actions:**
-  - Review selected student samples
+  - Review selected student work samples
+  - Check marking against criteria
   - Assess grading appropriateness
+  - Verify feedback quality
   - Provide feedback on marking
   - **Decision:** Approve OR Request clarification
 
-#### **4.2 ML: Sent Back for Clarification** (Yellow Theme)
+**4.2 ML: Sent Back for Clarification** (Yellow Theme)
 - **Actor:** Module Leader
-- **Purpose:** Respond to moderator questions
+- **Timing:** If IM has questions
+- **Purpose:** Respond to moderator concerns about marking
 - **Key Actions:**
-  - Read moderator's concerns/questions
-  - Provide detailed clarification
-  - Address grading issues
+  - Read moderator's questions about marking decisions
+  - Provide detailed clarification on grading rationale
+  - Address any grading inconsistencies
+  - Explain borderline cases
   - Resubmit response
 
-#### **4.3 ML: Signed Off** (Green Theme)
+**4.3 ML: Signed Off** (Green Theme)
 - **Actor:** Module Leader & Internal Moderator
-- **Purpose:** Final approval of moderation
+- **Timing:** After IM satisfied with marking
+- **Purpose:** Internal approval of marking standards
 - **Key Actions:**
-  - IM reviews ML response
-  - IM signs off approval
-  - ML countersigns
+  - IM reviews ML clarification (if needed)
+  - IM signs off internal moderation
+  - ML countersigns approval
   - Proceed to external examination
 
----
+#### **Stage 5: External Examiner** (2 Views)
 
-### **Stage 5: External Examiner** (2 Views)
-
-#### **5.1 External Examiner View** (Purple Theme)
+**5.1 External Examiner View** (Purple Theme)
 - **Actor:** External Examiner (EE)
-- **Purpose:** Independent review of assessment standards
+- **Timing:** After internal moderation complete
+- **Purpose:** Independent validation of academic standards
 - **Key Actions:**
-  - Review student sample work
+  - Review student sample work and grades
+  - Review marking and feedback
   - Review internal moderation documentation
+  - Compare standards to other UK institutions
   - Answer assessment questions
   - Provide comprehensive feedback
   - Sign and submit report
 
-#### **5.2 Course Leader: Completed Report** (Blue/Green Theme)
+**5.2 Course Leader: Completed Report** (Blue/Green Theme)
 - **Actor:** Course Leader / Module Leader
-- **Purpose:** Review and acknowledge completion
+- **Timing:** After EE submits report
+- **Purpose:** Final review and acknowledgment
 - **Key Actions:**
   - Review complete External Examiner report
   - View all submitted responses and feedback
   - Download complete PDF report
   - Acknowledge receipt
-  - **Complete assessment workflow**
+  - **Complete post-assessment quality assurance**
 
 ---
 
-## Key Features Across All Workflows
-
-### **Shared State Management**
-- Central `AssessmentData` interface in App.tsx
-- Data entered on any page updates all other pages
-- Seamless information flow throughout workflow
-
-### **Role-Based Views**
-- **Module Leader:** Primary user, manages most stages
-- **Peer Reviewer:** Quality assurance of assessment brief
-- **Internal Moderator:** Reviews grading consistency
-- **External Examiner:** Independent standards validation
-- **Course Leader:** Final oversight and acknowledgment
-
-### **Feedback Loops**
-1. **Peer Review Loop:** Peer Reviewer ↔ Module Leader
-2. **Internal Moderation Loop:** Internal Moderator ↔ Module Leader
-
-### **Color Coding System**
-- 🔵 **Blue:** Active working views (default state)
-- 🟡 **Yellow:** Sent back for amendments/clarification
-- 🟢 **Green:** Approved/signed off stages
-- 🟣 **Purple:** External examiner activities
-
-### **Document Trail**
-- Assessment Brief document
-- Peer review feedback
-- Student work samples
-- Internal moderation reports
-- External examiner report
-- Complete workflow PDF
-
----
-
-## Navigation Between Pages
+## Complete Academic Cycle
 
 ```mermaid
 graph LR
-    A[Assessment Brief] --> B[Peer Review]
-    B --> C[Sample Selection]
-    C --> D[Internal Moderation]
-    D --> E[External Examiner]
+    subgraph PreSemester["PRE-SEMESTER: Workflow A"]
+        A[Assessment Brief<br/>Creation] --> B[Peer Review<br/>& Approval]
+    end
     
-    style A fill:#e3f2fd
-    style B fill:#f3e5f5
-    style C fill:#e8f5e9
-    style D fill:#fff3e0
-    style E fill:#fce4ec
+    B --> S[SEMESTER:<br/>Students Complete<br/>& Submit Work]
+    S --> M[Marking Period:<br/>Work is Marked<br/>& Graded]
+    
+    subgraph PostMarking["POST-MARKING: Workflow B"]
+        M --> C[Sample<br/>Selection]
+        C --> D[Internal<br/>Moderation]
+        D --> E[External<br/>Examination]
+    end
+    
+    E --> Complete([Process<br/>Complete])
+    
+    style PreSemester fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style PostMarking fill:#e8f5e9,stroke:#388e3c,stroke-width:3px
+    style S fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style M fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style Complete fill:#4caf50,stroke:#2e7d32,stroke-width:3px,color:#fff
 ```
 
-Users can navigate to any page via the navigation tabs, but the workflow is designed to progress sequentially from Assessment Brief → Peer Review → Sample Selection → Internal Moderation → External Examiner.
+
 
 ---
 
-## Use Case Diagram
-
-The following use case diagram illustrates the interactions between different actors and the system functionalities:
+## Use Case Diagram - Workflow A: Pre-Assessment
 
 ```mermaid
 graph TB
-    subgraph System["LMS Assessment Workflow System"]
+    subgraph WorkflowA["Workflow A: Pre-Assessment Design & Approval"]
         subgraph Brief["Assessment Brief Management"]
             UC1[Create Assessment Brief]
             UC2[Edit Assessment Details]
@@ -302,9 +342,44 @@ graph TB
             UC10[Resubmit Amended Brief]
             UC11[View Peer Approval]
         end
-        
+    end
+    
+    %% Actors for Workflow A
+    ML_A[👤 Module Leader<br/>Pre-Assessment]
+    PR[👤 Peer Reviewer]
+    
+    %% Module Leader connections - Workflow A
+    ML_A -.->|performs| UC1
+    ML_A -.->|performs| UC2
+    ML_A -.->|performs| UC3
+    ML_A -.->|performs| UC4
+    ML_A -.->|performs| UC9
+    ML_A -.->|performs| UC10
+    ML_A -.->|performs| UC11
+    
+    %% Peer Reviewer connections
+    PR -.->|performs| UC5
+    PR -.->|performs| UC6
+    PR -.->|performs| UC7
+    PR -.->|performs| UC8
+    
+    %% Styling
+    classDef actor fill:#4a5568,stroke:#2d3748,stroke-width:3px,color:#fff
+    classDef usecase fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    
+    class ML_A,PR actor
+    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11 usecase
+```
+
+---
+
+## Use Case Diagram - Workflow B: Post-Assessment
+
+```mermaid
+graph TB
+    subgraph WorkflowB["Workflow B: Post-Assessment Quality Assurance"]
         subgraph Sample["Sample Selection Management"]
-            UC12[View Student Submissions]
+            UC12[View Marked Submissions]
             UC13[Select Student Samples]
             UC14[Assign Internal Moderator]
             UC15[Submit for Internal Moderation]
@@ -312,7 +387,7 @@ graph TB
         
         subgraph IntMod["Internal Moderation Management"]
             UC16[Review Student Samples]
-            UC17[Assess Grading Standards]
+            UC17[Assess Marking Standards]
             UC18[Provide Moderation Feedback]
             UC19[Request Clarification]
             UC20[Respond to Clarification Request]
@@ -321,7 +396,7 @@ graph TB
         end
         
         subgraph ExtExam["External Examination Management"]
-            UC23[Review Complete Assessment]
+            UC23[Review Marked Work]
             UC24[Review Internal Moderation]
             UC25[Answer Assessment Questions]
             UC26[Provide External Feedback]
@@ -339,39 +414,23 @@ graph TB
         end
     end
     
-    %% Actors
-    ML[👤 Module Leader]
-    PR[👤 Peer Reviewer]
+    %% Actors for Workflow B
+    ML_B[👤 Module Leader<br/>Post-Assessment]
     IM[👤 Internal Moderator]
     EE[👤 External Examiner]
     CL[👤 Course Leader]
     
-    %% Module Leader connections
-    ML -.->|performs| UC1
-    ML -.->|performs| UC2
-    ML -.->|performs| UC3
-    ML -.->|performs| UC4
-    ML -.->|performs| UC9
-    ML -.->|performs| UC10
-    ML -.->|performs| UC11
-    ML -.->|performs| UC12
-    ML -.->|performs| UC13
-    ML -.->|performs| UC14
-    ML -.->|performs| UC15
-    ML -.->|performs| UC20
-    ML -.->|performs| UC22
-    ML -.->|performs| UC31
-    ML -.->|performs| UC32
-    ML -.->|performs| UC33
-    ML -.->|performs| UC34
-    
-    %% Peer Reviewer connections
-    PR -.->|performs| UC5
-    PR -.->|performs| UC6
-    PR -.->|performs| UC7
-    PR -.->|performs| UC8
-    PR -.->|performs| UC31
-    PR -.->|performs| UC32
+    %% Module Leader connections - Workflow B
+    ML_B -.->|performs| UC12
+    ML_B -.->|performs| UC13
+    ML_B -.->|performs| UC14
+    ML_B -.->|performs| UC15
+    ML_B -.->|performs| UC20
+    ML_B -.->|performs| UC22
+    ML_B -.->|performs| UC31
+    ML_B -.->|performs| UC32
+    ML_B -.->|performs| UC33
+    ML_B -.->|performs| UC34
     
     %% Internal Moderator connections
     IM -.->|performs| UC16
@@ -401,196 +460,66 @@ graph TB
     
     %% Styling
     classDef actor fill:#4a5568,stroke:#2d3748,stroke-width:3px,color:#fff
-    classDef usecase fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    classDef system fill:#f5f5f5,stroke:#666,stroke-width:2px
+    classDef usecase fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
     
-    class ML,PR,IM,EE,CL actor
-    class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC10,UC11,UC12,UC13,UC14,UC15,UC16,UC17,UC18,UC19,UC20,UC21,UC22,UC23,UC24,UC25,UC26,UC27,UC28,UC29,UC30,UC31,UC32,UC33,UC34 usecase
+    class ML_B,IM,EE,CL actor
+    class UC12,UC13,UC14,UC15,UC16,UC17,UC18,UC19,UC20,UC21,UC22,UC23,UC24,UC25,UC26,UC27,UC28,UC29,UC30,UC31,UC32,UC33,UC34 usecase
 ```
 
 ---
 
-## Use Case Diagram - Alternative Format (UML Style)
+## Actor Roles Across Both Workflows
 
-```mermaid
-%%{init: {'theme':'base'}}%%
-classDiagram
-    class ModuleLeader {
-        <<actor>>
-    }
-    class PeerReviewer {
-        <<actor>>
-    }
-    class InternalModerator {
-        <<actor>>
-    }
-    class ExternalExaminer {
-        <<actor>>
-    }
-    class CourseLeader {
-        <<actor>>
-    }
-    
-    class AssessmentBriefCreation {
-        +createBrief()
-        +editDetails()
-        +uploadDocument()
-        +submitForReview()
-    }
-    
-    class PeerReviewProcess {
-        +reviewBrief()
-        +provideFeedback()
-        +approveBrief()
-        +requestAmendments()
-        +respondToFeedback()
-        +resubmitBrief()
-    }
-    
-    class SampleSelection {
-        +viewSubmissions()
-        +selectSamples()
-        +assignModerator()
-        +submitForModeration()
-    }
-    
-    class InternalModerationProcess {
-        +reviewSamples()
-        +assessGrading()
-        +provideFeedback()
-        +requestClarification()
-        +respondToClarification()
-        +signOffModeration()
-        +countersign()
-    }
-    
-    class ExternalExaminationProcess {
-        +reviewAssessment()
-        +reviewModeration()
-        +answerQuestions()
-        +provideFeedback()
-        +submitReport()
-        +viewCompletedReport()
-        +acknowledgeReceipt()
-    }
-    
-    class SystemFunctions {
-        +navigatePages()
-        +viewStatus()
-        +downloadDocuments()
-        +viewAuditTrail()
-    }
-    
-    ModuleLeader --> AssessmentBriefCreation : creates
-    ModuleLeader --> PeerReviewProcess : responds
-    ModuleLeader --> SampleSelection : manages
-    ModuleLeader --> InternalModerationProcess : responds/signs
-    ModuleLeader --> SystemFunctions : uses
-    
-    PeerReviewer --> PeerReviewProcess : reviews/approves
-    PeerReviewer --> SystemFunctions : uses
-    
-    InternalModerator --> InternalModerationProcess : moderates/signs
-    InternalModerator --> SystemFunctions : uses
-    
-    ExternalExaminer --> ExternalExaminationProcess : examines/submits
-    ExternalExaminer --> SystemFunctions : uses
-    
-    CourseLeader --> ExternalExaminationProcess : reviews/acknowledges
-    CourseLeader --> SystemFunctions : uses
-```
+| Actor | Workflow A: Pre-Assessment | Workflow B: Post-Assessment |
+|-------|---------------------------|----------------------------|
+| **Module Leader** | • Create assessment brief<br>• Respond to peer feedback<br>• Revise brief based on feedback<br>• Submit for approval | • Select student samples from marked work<br>• Assign internal moderator<br>• Respond to moderation queries<br>• Countersign moderation approval |
+| **Peer Reviewer** | • Review assessment design<br>• Provide feedback on brief<br>• Approve or request amendments<br>• Review resubmissions | *Not involved in Workflow B* |
+| **Internal Moderator** |  | • Review marked student samples<br>• Assess marking consistency<br>• Request clarifications on grading<br>• Sign off moderation |
+| **External Examiner** |  | • Review marked work samples<br>• Review internal moderation<br>• Validate academic standards<br>• Submit final report |
+
 
 ---
 
-## Actor Responsibilities Matrix
+## Key Differences Between Workflows
 
-| Actor | Primary Responsibilities | Secondary Responsibilities |
-|-------|-------------------------|---------------------------|
-| **Module Leader** | • Create assessment brief<br>• Respond to peer feedback<br>• Select student samples<br>• Assign moderators<br>• Respond to moderation queries<br>• Countersign final moderation | • Navigate workflow<br>• Download documents<br>• View audit trail<br>• Track workflow status |
-| **Peer Reviewer** | • Review assessment brief<br>• Provide constructive feedback<br>• Approve or request amendments<br>• Review resubmissions | • Navigate to peer review section<br>• View workflow status |
-| **Internal Moderator** | • Review student samples<br>• Assess grading consistency<br>• Request clarifications<br>• Sign off moderation | • Navigate to moderation section<br>• View workflow status |
-| **External Examiner** | • Review complete assessment<br>• Review internal moderation<br>• Answer assessment questions<br>• Provide comprehensive feedback<br>• Submit final report | • Download assessment documents<br>• Navigate workflow |
-| **Course Leader** | • Review completed external report<br>• Download complete PDF<br>• Acknowledge receipt<br>• Complete workflow | • View audit trail<br>• Track overall workflow status |
-
----
-
-## Use Case Descriptions
-
-### **UC1: Create Assessment Brief**
-- **Actor:** Module Leader
-- **Description:** Module Leader creates a new assessment brief with all required module information
-- **Precondition:** User is logged in as Module Leader
-- **Postcondition:** Assessment brief is created and saved
-
-### **UC5: Review Assessment Brief**
-- **Actor:** Peer Reviewer
-- **Description:** Peer Reviewer examines the assessment brief for quality and compliance
-- **Precondition:** Assessment brief has been submitted for peer review
-- **Postcondition:** Review feedback is recorded
-
-### **UC7: Approve Assessment Brief**
-- **Actor:** Peer Reviewer
-- **Description:** Peer Reviewer approves the assessment brief, allowing progression to next stage
-- **Precondition:** Peer review has been completed satisfactorily
-- **Postcondition:** Assessment brief is marked as approved, ML can proceed to sample selection
-- **Alternative Flow:** UC8 (Request Amendments)
-
-### **UC13: Select Student Samples**
-- **Actor:** Module Leader
-- **Description:** Module Leader selects representative student work samples across grade ranges
-- **Precondition:** Assessment brief is approved by peer reviewer
-- **Postcondition:** Student samples are selected for internal moderation
-
-### **UC16: Review Student Samples**
-- **Actor:** Internal Moderator
-- **Description:** Internal Moderator reviews selected samples and assesses grading standards
-- **Precondition:** Samples have been submitted for internal moderation
-- **Postcondition:** Moderation feedback is recorded
-
-### **UC19: Request Clarification**
-- **Actor:** Internal Moderator
-- **Description:** Internal Moderator requests additional information or clarification from Module Leader
-- **Precondition:** Moderation review reveals questions or concerns
-- **Postcondition:** Clarification request is sent to Module Leader
-- **Alternative Flow:** UC21 (Sign Off Internal Moderation)
-
-### **UC23: Review Complete Assessment**
-- **Actor:** External Examiner
-- **Description:** External Examiner reviews all student samples and documentation
-- **Precondition:** Internal moderation is complete and signed off
-- **Postcondition:** External review is documented
-
-### **UC27: Submit External Report**
-- **Actor:** External Examiner
-- **Description:** External Examiner submits comprehensive report on assessment standards
-- **Precondition:** All review questions answered and feedback provided
-- **Postcondition:** External report is submitted, Course Leader is notified
-
-### **UC30: Acknowledge Report Receipt**
-- **Actor:** Course Leader
-- **Description:** Course Leader acknowledges receipt of external examiner report
-- **Precondition:** External examiner has submitted report
-- **Postcondition:** Assessment workflow is marked as complete
+| Aspect | Workflow A: Pre-Assessment | Workflow B: Post-Assessment |
+|--------|---------------------------|----------------------------|
+| **Timing** | Before semester / Before student work begins | After semester / After work is marked |
+| **Focus** | Assessment design and appropriateness | Marking quality and standards |
+| **Input** | Assessment brief document | Marked student work samples |
+| **Primary Quality Check** | Peer review of assessment design | Internal & external moderation of marking |
+| **Actors Involved** | Module Leader, Peer Reviewer | Module Leader, Internal Moderator, External Examiner, Course Leader |
+| **Outcome** | Approved assessment ready for use | Quality-assured marking with external validation |
+| **Frequency** | Once before semester | Once after marking complete |
 
 ---
 
 ## System Interaction Patterns
 
-### **Pattern 1: Feedback Loop (Peer Review)**
+### **Workflow A Pattern: Assessment Design Approval**
 ```
-Module Leader → Submit Brief → Peer Reviewer → Request Amendments → 
-Module Leader → Make Changes → Resubmit → Peer Reviewer → Approve
-```
-
-### **Pattern 2: Feedback Loop (Internal Moderation)**
-```
-Module Leader → Submit Samples → Internal Moderator → Request Clarification → 
-Module Leader → Provide Response → Internal Moderator → Sign Off
+Module Leader → Create Brief → Submit → 
+Peer Reviewer → Review → 
+  [If concerns] → Request Amendments → Module Leader → Revise → Resubmit → Peer Reviewer
+  [If satisfied] → Approve → 
+Ready for Semester
 ```
 
-### **Pattern 3: Linear Progression (Happy Path)**
+### **Workflow B Pattern 1: Internal Moderation Loop**
 ```
-Module Leader → Create Brief → Peer Reviewer → Approve → 
-Module Leader → Select Samples → Internal Moderator → Sign Off → 
-External Examiner → Submit Report → Course Leader → Acknowledge → Complete
+Module Leader → Select Samples → Submit → 
+Internal Moderator → Review Marking → 
+  [If questions] → Request Clarification → Module Leader → Respond → Internal Moderator
+  [If satisfied] → Sign Off → 
+Proceed to External Examination
 ```
+
+### **Workflow B Pattern 2: External Examination**
+```
+External Examiner → Review Work & Moderation → 
+Answer Questions → Provide Feedback → Submit Report → 
+Course Leader → Review → Acknowledge → 
+Process Complete
+```
+
+---
