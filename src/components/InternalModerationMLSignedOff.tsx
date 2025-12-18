@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { HelpCircle, Download, AlertCircle } from 'lucide-react';
+import { HelpCircle, CheckCircle, ArrowRight } from 'lucide-react';
 import { AssessmentData, StudentSample } from '../App';
 
-interface SampleSelectionProps {
+interface InternalModerationMLSignedOffProps {
   onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
   assessmentData: AssessmentData;
   updateAssessmentData: (updates: Partial<AssessmentData>) => void;
+  onViewChange?: (view: 'moderator-view' | 'ml-sent-back' | 'ml-signed-off') => void;
 }
 
-export function SampleSelection({ onNavigate, assessmentData, updateAssessmentData }: SampleSelectionProps) {
-  const [formData, setFormData] = useState({
+export function InternalModerationMLSignedOff({ onNavigate, assessmentData, updateAssessmentData, onViewChange }: InternalModerationMLSignedOffProps) {
+  const [formData] = useState({
     moduleTitle: 'COM416: External examiner feedback',
     moduleCode: 'COM416',
     moduleLeader: 'Dr. Jane Smith',
@@ -18,15 +19,18 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
     semester: 'Semester 1',
     numberOfSubmissions: '45',
     numberOfModeratedSubmissions: '5',
-    gradesAppropriate: '',
-    additionalComments: '',
+    gradesAppropriate: 'The grades are appropriate and consistent with the learning outcomes. Feedback provided is clear, constructive, and supports student learning. The marking is fair and equitable across all submissions.',
+    moderatorComments: 'All samples reviewed are of good quality. The marking is consistent and feedback is appropriate. No further action required.',
+    internalModeratorName: assessmentData.internalModeratorName || 'Dr. Sarah Johnson',
+    internalModeratorDate: '2024-12-15',
+    moduleLeaderSignName: 'Dr. Jane Smith',
+    moduleLeaderSignDate: '2024-12-16',
     isFranchisePartner: false,
-    requiresExternalModeration: true,
-    selectedModerator: assessmentData.internalModeratorName || ''
+    requiresExternalModeration: true
   });
 
-  // Mock data for moderated sample - this would come from the Grade Report
-  const [studentSamples, setStudentSamples] = useState<StudentSample[]>([
+  // Mock data for moderated sample
+  const [studentSamples] = useState<StudentSample[]>([
     { id: 'ST001234', firstName: 'Alice Johnson', grade: '74', workLink: '#' },
     { id: 'ST001235', firstName: 'Bob Williams', grade: '65', workLink: '#' },
     { id: 'ST001236', firstName: 'Charlie Brown', grade: '58', workLink: '#' },
@@ -34,36 +38,14 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
     { id: 'ST001238', firstName: 'Ethan Davis', grade: '35', workLink: '#' }
   ]);
 
-  // Moderator dropdown options
-  const moderators = [
-    'Select a moderator...',
-    'Dr. Sarah Johnson',
-    'Prof. Michael Chen',
-    'Dr. Emily Williams',
-    'Dr. James Anderson',
-    'Prof. Rebecca Taylor',
-    'Dr. David Miller'
-  ];
-
-  const handleSendToModerator = () => {
-    if (!formData.selectedModerator || formData.selectedModerator === 'Select a moderator...') {
-      alert('Please select a moderator before sending.');
-      return;
-    }
-    
-    if (confirm('Are you sure you want to send this Sample Selection form to the Internal Moderator? They will be notified by email.')) {
-      // Update the shared state with the selected moderator
+  const handleSendToExternalExaminer = () => {
+    if (confirm('Are you sure you want to send this approved Internal Moderation to the External Examiner? They will be notified by email.')) {
       updateAssessmentData({
-        internalModeratorName: formData.selectedModerator
+        internalModerationStatus: 'sent-to-external'
       });
-      alert('Sample Selection form has been sent to the Internal Moderator. They have been notified by email.');
-      // Navigate to Internal Moderation page
-      onNavigate('internal-moderation');
+      alert('Internal Moderation has been sent to the External Examiner. They have been notified by email.');
+      onNavigate('feedback');
     }
-  };
-
-  const handleDownloadPDF = () => {
-    alert('Downloading Sample Selection form as PDF...\n\nIn a production environment, this would generate and download a PDF of the sample selection form.');
   };
 
   return (
@@ -100,13 +82,13 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
             </button>
             <button 
               onClick={() => onNavigate('sample-selection')}
-              className="py-4 text-[#0066cc] hover:text-[#004499] border-b-2 border-[#0066cc]"
+              className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Sample Selection
             </button>
             <button 
               onClick={() => onNavigate('internal-moderation')}
-              className="py-4 text-[#0066cc] hover:text-[#004499]"
+              className="py-4 text-[#0066cc] hover:text-[#004499] border-b-2 border-[#0066cc]"
             >
               Internal Moderation
             </button>
@@ -125,27 +107,55 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto p-6">
-        <div className="bg-white border border-gray-300 rounded p-8">
-          <h1 className="text-center text-2xl mb-4">Sample Selection</h1>
-          
-          {/* Note about Sample Selection */}
-          <div className="mb-8 p-4 bg-blue-50 border-l-4 border-blue-600 rounded">
-            <p className="text-sm text-blue-800">
-              <strong>Note:</strong> This is for course leader sample selection following grading. 
-              Please select representative student samples before sending to the Internal Moderator for review.
-            </p>
+        {/* View Toggle Buttons */}
+        <div className="mb-6 bg-white border border-gray-300 rounded p-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm mr-2">View:</span>
+            <button
+              onClick={() => onViewChange?.('moderator-view')}
+              className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              Internal Moderator View
+            </button>
+            <button
+              onClick={() => onViewChange?.('ml-sent-back')}
+              className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              ML: Sent Back for Clarification
+            </button>
+            <button
+              className="px-4 py-2 rounded transition-colors bg-green-600 text-white"
+            >
+              ML: Signed Off
+            </button>
           </div>
+        </div>
+
+        {/* Status Banner - Green for Approved */}
+        <div className="bg-green-50 border-l-4 border-green-600 p-6 mb-6 rounded">
+          <div className="flex items-start gap-3">
+            <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+            <div className="flex-1">
+              <h3 className="text-green-800 mb-2">✓ Internal Moderation Approved</h3>
+              <p className="text-sm text-green-700">
+                The Internal Moderator has approved this moderation. This form is now ready to be sent to the External Examiner.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white border border-gray-300 rounded p-8">
+          <h1 className="text-center text-2xl mb-8">Internal Moderation Form - Approved</h1>
 
           {/* Module Information Section */}
           <div className="space-y-4 mb-8">
-            <h2 className="bg-gray-200 px-4 py-2 mb-4">Module Information</h2>
+            <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">Module Information</h2>
 
             <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
               <label className="text-right pt-2">Module Title:</label>
               <input
                 type="text"
                 value={formData.moduleTitle}
-                onChange={(e) => setFormData({ ...formData, moduleTitle: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -156,7 +166,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.moduleCode}
-                onChange={(e) => setFormData({ ...formData, moduleCode: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -167,7 +176,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.moduleLeader}
-                onChange={(e) => setFormData({ ...formData, moduleLeader: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -178,7 +186,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.level}
-                onChange={(e) => setFormData({ ...formData, level: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -189,7 +196,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.academicYear}
-                onChange={(e) => setFormData({ ...formData, academicYear: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -200,7 +206,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.semester}
-                onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -225,62 +230,16 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
                 readOnly
               />
             </div>
-
-            <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
-              <label className="text-right pt-2">Franchise Partner:</label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={formData.isFranchisePartner}
-                  onChange={(e) => setFormData({ ...formData, isFranchisePartner: e.target.checked })}
-                />
-                <span className="text-sm">This module is for a Franchise Partner</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
-              <label className="text-right pt-2">External Moderation Required:</label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={formData.requiresExternalModeration}
-                  onChange={(e) => setFormData({ ...formData, requiresExternalModeration: e.target.checked })}
-                />
-                <span className="text-sm">Requires external moderation (All levels except normal undergraduate first year)</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
-              <label className="text-right pt-2">Select Internal Moderator:</label>
-              <select
-                value={formData.selectedModerator}
-                onChange={(e) => {
-                  setFormData({ ...formData, selectedModerator: e.target.value });
-                  updateAssessmentData({ internalModeratorName: e.target.value });
-                }}
-                className="border border-gray-300 px-3 py-2 bg-gray-200"
-              >
-                {moderators.map((moderator) => (
-                  <option key={moderator} value={moderator}>{moderator}</option>
-                ))}
-              </select>
-            </div>
           </div>
 
           {/* Student Sample Section */}
           <div className="mb-8">
-            <h2 className="bg-gray-200 px-4 py-2 mb-4">Student Names/Numbers & Grades of Moderated Sample</h2>
-            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
-              <p className="text-sm">
-                <strong>Note:</strong> Internal moderation samples must be properly representative and include borderline cases between each grade band. 
-                The sample size must represent 10% of submissions which should not be more than 15 or less than 5 (or all assignments if less than 5) assignments for large or small modules.
-              </p>
-            </div>
+            <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">Student Names/Numbers & Grades of Moderated Sample</h2>
             
             <div className="overflow-x-auto">
               <table className="w-full border-collapse border border-gray-400">
                 <thead>
-                  <tr className="bg-gray-200">
+                  <tr className="bg-green-50">
                     <th className="border border-gray-400 p-2 text-left">Student ID</th>
                     <th className="border border-gray-400 p-2 text-left">Student First Name</th>
                     <th className="border border-gray-400 p-2 text-left">Grade</th>
@@ -305,19 +264,107 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
             </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Moderation Review Section */}
+          <div className="space-y-4 mb-8">
+            <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">Moderation Review</h2>
+
+            <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
+              <label className="text-right pt-2">Are the grades and feedback comments appropriate?</label>
+              <div className="w-full p-3 border border-green-300 bg-green-50 rounded">
+                <p className="text-sm text-gray-700">{formData.gradesAppropriate}</p>
+              </div>
+            </div>
+
+            {/* Moderator Comments - Highlighted in Green */}
+            <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
+              <label className="text-right pt-2">Internal Moderator Comments:</label>
+              <div className="w-full p-4 border-2 border-green-400 bg-green-50 rounded">
+                <p className="text-sm mb-1"><strong className="text-green-900">✓ Moderator Approval:</strong></p>
+                <p className="text-sm text-gray-800">{formData.moderatorComments}</p>
+              </div>
+            </div>
+
+            <div className="p-4 bg-green-50 border border-green-300 rounded">
+              <p className="text-sm text-green-800">
+                <strong>✓ Approved:</strong> This moderation has been approved by the Internal Moderator and is ready to proceed to the External Examiner.
+              </p>
+            </div>
+          </div>
+
+          {/* Sign-off Section - Read Only with Green Accents */}
+          <div className="mb-8">
+            <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">Grade/Marks Agreement & Sign-off</h2>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-400">
+                <thead>
+                  <tr className="bg-green-50">
+                    <th className="border border-gray-400 p-2 text-left w-1/3">Grade/marks agreed</th>
+                    <th className="border border-gray-400 p-2 text-left w-1/3">Name</th>
+                    <th className="border border-gray-400 p-2 text-left w-1/3">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-green-50">
+                    <td className="border border-gray-400 p-2">
+                      <strong>✓ Signed Internal Moderator</strong>
+                    </td>
+                    <td className="border border-gray-400 p-2">
+                      <input
+                        type="text"
+                        value={formData.internalModeratorName}
+                        className="w-full p-2 border border-green-300 bg-green-50"
+                        readOnly
+                      />
+                    </td>
+                    <td className="border border-gray-400 p-2">
+                      <input
+                        type="text"
+                        value={formData.internalModeratorDate}
+                        className="w-full p-2 border border-green-300 bg-green-50"
+                        readOnly
+                      />
+                    </td>
+                  </tr>
+                  <tr className="bg-green-50">
+                    <td className="border border-gray-400 p-2">
+                      <strong>✓ Signed Module Leader</strong>
+                    </td>
+                    <td className="border border-gray-400 p-2">
+                      <input
+                        type="text"
+                        value={formData.moduleLeaderSignName}
+                        className="w-full p-2 border border-green-300 bg-green-50"
+                        readOnly
+                      />
+                    </td>
+                    <td className="border border-gray-400 p-2">
+                      <input
+                        type="text"
+                        value={formData.moduleLeaderSignDate}
+                        className="w-full p-2 border border-green-300 bg-green-50"
+                        readOnly
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Action Button */}
           <div className="border-t-2 border-gray-300 pt-6">
             <div className="flex justify-center">
-              {/* Send to Internal Moderator */}
               <div className="text-center">
                 <button
-                  onClick={handleSendToModerator}
-                  className="px-8 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                  onClick={handleSendToExternalExaminer}
+                  className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
                 >
-                  Send to Internal Moderator
+                  <ArrowRight className="w-5 h-5" />
+                  Send to External Examiner
                 </button>
                 <p className="text-sm text-gray-600 mt-2">
-                  Send this sample selection to the Internal Moderator for review and sign-off.
+                  Send this approved moderation to the External Examiner for review.
                 </p>
               </div>
             </div>
@@ -337,7 +384,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
           </a>
           <span className="text-gray-400">/</span>
           <a href="#" className="text-[#0066cc] hover:text-[#004499]">
-            Sample Selection
+            Internal Moderation
           </a>
         </div>
       </div>

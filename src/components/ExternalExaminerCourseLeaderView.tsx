@@ -1,52 +1,40 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronRight, Info, HelpCircle, Download, CheckCircle } from 'lucide-react';
-import { AssessmentData, StudentSample } from '../App';
-import { ExternalExaminerCourseLeaderView } from './ExternalExaminerCourseLeaderView';
+import { HelpCircle, CheckCircle, Download, ChevronDown, ChevronRight } from 'lucide-react';
+import { AssessmentData } from '../App';
 
-interface FeedbackFormProps {
+interface ExternalExaminerCourseLeaderViewProps {
   onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
   assessmentData: AssessmentData;
   updateAssessmentData: (updates: Partial<AssessmentData>) => void;
+  onViewChange?: (view: 'external-examiner' | 'course-leader') => void;
 }
 
-export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData }: FeedbackFormProps) {
-  const [currentView, setCurrentView] = useState<'external-examiner' | 'course-leader'>('external-examiner');
+export function ExternalExaminerCourseLeaderView({ onNavigate, assessmentData, updateAssessmentData, onViewChange }: ExternalExaminerCourseLeaderViewProps) {
   const [assessmentExpanded, setAssessmentExpanded] = useState(true);
   const [feedbackExpanded, setFeedbackExpanded] = useState(true);
-  const [comments, setComments] = useState('');
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [question1, setQuestion1] = useState('');
-  const [question2, setQuestion2] = useState('');
-  const [question3, setQuestion3] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [externalExaminerSignature, setExternalExaminerSignature] = useState('');
-  const [externalExaminerDate, setExternalExaminerDate] = useState('');
-
-  // If view is course-leader, render that component
-  if (currentView === 'course-leader') {
-    return <ExternalExaminerCourseLeaderView onNavigate={onNavigate} assessmentData={assessmentData} updateAssessmentData={updateAssessmentData} onViewChange={setCurrentView} />;
-  }
-
-  const handleSubmitSignOff = () => {
-    if (!externalExaminerSignature || !externalExaminerDate) {
-      alert('Please complete the External Examiner signature fields (Name and Date) before submitting.');
-      return;
-    }
-
-    if (!isCompleted) {
-      alert('Please check the "I have completed this form and wish to submit it" checkbox before submitting.');
-      return;
-    }
-
-    if (confirm('Are you sure you want to submit this External Examiner report? The Module Leader will be notified by email that the assessment process is complete.')) {
-      alert('External Examiner report has been submitted successfully.\n\nThe Module Leader has been notified by email that the external examination process is complete.');
-      setIsSubmitted(true);
-    }
+  // Mock completed data
+  const completedData = {
+    question1: 'yes',
+    question2: 'yes',
+    question3: 'yes',
+    comments: 'I have reviewed all student samples and the internal moderation documentation. The assessment is well-designed and appropriately challenging for the level. The marking is consistent and fair across all samples reviewed.\n\nThe feedback provided to students is constructive and detailed, clearly explaining how grades were awarded. The standards achieved by students are comparable to similar programmes at other UK institutions.\n\nThe internal moderation process has been thorough, and I am satisfied that the assessment process has been conducted to a high standard. No concerns or recommendations for improvement at this time.',
+    externalExaminerName: 'Prof. Michael Thompson',
+    externalExaminerDate: '2024-12-17',
+    submittedDate: '17th December 2024'
   };
 
   const handleDownloadPDF = () => {
-    alert('Downloading External Examiner Report as PDF...\n\nIn a production environment, this would generate and download a PDF of the complete report.');
+    alert('Downloading Complete External Examiner Report as PDF...\n\nIn a production environment, this would generate and download a comprehensive PDF including all assessment documentation, internal moderation records, and external examiner feedback.');
+  };
+
+  const handleAcknowledge = () => {
+    if (confirm('Are you sure you want to acknowledge receipt of this External Examiner report? This will mark the assessment process as complete.')) {
+      updateAssessmentData({
+        externalExaminerCompleted: true
+      });
+      alert('External Examiner report acknowledged. The assessment workflow is now complete.');
+    }
   };
 
   return (
@@ -69,31 +57,31 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
             <button className="py-4 text-[#0066cc] hover:text-[#004499]">
               Participants
             </button>
-            <button
+            <button 
               onClick={() => onNavigate('brief-creation')}
               className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Assessment Brief
             </button>
-            <button
+            <button 
               onClick={() => onNavigate('peer-review')}
               className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Peer Review
             </button>
-            <button
+            <button 
               onClick={() => onNavigate('sample-selection')}
               className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Sample Selection
             </button>
-            <button
+            <button 
               onClick={() => onNavigate('internal-moderation')}
               className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Internal Moderation
             </button>
-            <button
+            <button 
               onClick={() => onNavigate('feedback')}
               className="py-4 text-[#0066cc] hover:text-[#004499] border-b-2 border-[#0066cc]"
             >
@@ -113,43 +101,45 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
           <div className="flex items-center gap-2">
             <span className="text-sm mr-2">View:</span>
             <button
-              className="px-4 py-2 rounded transition-colors bg-purple-600 text-white"
+              onClick={() => onViewChange?.('external-examiner')}
+              className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
               External Examiner View
             </button>
             <button
-              onClick={() => setCurrentView('course-leader')}
-              className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+              className="px-4 py-2 rounded transition-colors bg-blue-600 text-white"
             >
               Course Leader: Completed Report
             </button>
           </div>
         </div>
 
-        {/* Status Banner */}
-        {isSubmitted && (
-          <div className="bg-green-50 border-l-4 border-green-600 p-6 mb-6 rounded">
-            <div className="flex items-start gap-3">
-              <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-              <div className="flex-1">
-                <h3 className="text-green-800 mb-2">External Examiner Report Submitted</h3>
-                <p className="text-sm text-green-700">
-                  Your External Examiner report has been successfully submitted. The Module Leader has been notified by email that the external examination process is complete.
-                </p>
-              </div>
+        {/* Status Banner - Green for Completed */}
+        <div className="bg-green-50 border-l-4 border-green-600 p-6 mb-6 rounded">
+          <div className="flex items-start gap-3">
+            <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+            <div className="flex-1">
+              <h3 className="text-green-800 mb-2">✓ External Examiner Report Completed</h3>
+              <p className="text-sm text-green-700">
+                The External Examiner has submitted their report on {completedData.submittedDate}. The assessment workflow is complete. 
+                You can download the complete report as PDF below.
+              </p>
             </div>
           </div>
-        )}
+        </div>
 
         {/* Page Title */}
         <div className="bg-white border border-gray-300 rounded p-6 mb-6">
-          <h1 className="text-center text-2xl">External Examiner Report</h1>
+          <h1 className="text-center text-2xl">External Examiner Report - Completed</h1>
+          <p className="text-center text-sm text-gray-600 mt-2">
+            Submitted by {completedData.externalExaminerName} on {completedData.submittedDate}
+          </p>
         </div>
 
         <div className="bg-white border border-gray-300 rounded p-8 mb-6">
           {/* Module Information Section */}
           <div className="mb-8">
-            <h2 className="bg-gray-200 px-4 py-2 mb-4">Module Information</h2>
+            <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">Module Information</h2>
 
             <div className="space-y-4">
               <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
@@ -236,18 +226,12 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
 
           {/* Student Sample Section */}
           <div className="mb-8">
-            <h2 className="bg-gray-200 px-4 py-2 mb-4">Student Sample for External Review</h2>
-            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
-              <p className="text-sm">
-                <strong>Note:</strong> The following student samples have been selected and reviewed during internal moderation. 
-                You can view the student work and feedback by clicking the links provided.
-              </p>
-            </div>
+            <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">Student Sample Reviewed by External Examiner</h2>
             
             <div className="overflow-x-auto">
               <table className="w-full border-collapse border border-gray-400">
                 <thead>
-                  <tr className="bg-gray-200">
+                  <tr className="bg-green-50">
                     <th className="border border-gray-400 p-2 text-left">Student ID</th>
                     <th className="border border-gray-400 p-2 text-left">Student First Name</th>
                     <th className="border border-gray-400 p-2 text-left">Grade</th>
@@ -274,48 +258,33 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
 
           {/* Internal Moderation Summary */}
           <div className="mb-8">
-            <h2 className="bg-gray-200 px-4 py-2 mb-4">Internal Moderation Summary</h2>
+            <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">Internal Moderation Summary</h2>
             
             <div className="space-y-4">
               <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
                 <label className="text-right pt-2">Internal Moderator Assessment:</label>
-                <textarea
-                  value={assessmentData.gradesAppropriate}
-                  className="w-full h-24 p-3 border border-gray-300 bg-gray-100"
-                  readOnly
-                />
+                <div className="w-full p-3 border border-gray-300 bg-gray-50 rounded">
+                  <p className="text-sm text-gray-700">{assessmentData.gradesAppropriate}</p>
+                </div>
               </div>
 
               {assessmentData.additionalComments && (
                 <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
                   <label className="text-right pt-2">Additional Comments:</label>
-                  <textarea
-                    value={assessmentData.additionalComments}
-                    className="w-full h-24 p-3 border border-gray-300 bg-gray-100"
-                    readOnly
-                  />
-                </div>
-              )}
-
-              {assessmentData.moduleLeaderResponse && (
-                <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
-                  <label className="text-right pt-2">Module Leader Response:</label>
-                  <textarea
-                    value={assessmentData.moduleLeaderResponse}
-                    className="w-full h-24 p-3 border border-gray-300 bg-gray-100"
-                    readOnly
-                  />
+                  <div className="w-full p-3 border border-gray-300 bg-gray-50 rounded">
+                    <p className="text-sm text-gray-700">{assessmentData.additionalComments}</p>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Internal Moderation Sign-offs (Read-only) */}
+            {/* Internal Moderation Sign-offs */}
             <div className="mt-6">
               <h3 className="text-sm mb-3">Internal Moderation Sign-offs:</h3>
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-400">
                   <thead>
-                    <tr className="bg-gray-200">
+                    <tr className="bg-green-50">
                       <th className="border border-gray-400 p-2 text-left w-1/3">Role</th>
                       <th className="border border-gray-400 p-2 text-left w-1/3">Name</th>
                       <th className="border border-gray-400 p-2 text-left w-1/3">Date</th>
@@ -332,17 +301,6 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       <td className="border border-gray-400 p-2 bg-gray-100">{assessmentData.moduleLeaderSignName}</td>
                       <td className="border border-gray-400 p-2 bg-gray-100">{assessmentData.moduleLeaderSignDate}</td>
                     </tr>
-                    <tr>
-                      <td className="border border-gray-400 p-2 bg-yellow-50">
-                        Signed Solent Moderator Franchise Partners ONLY
-                      </td>
-                      <td className="border border-gray-400 p-2 bg-gray-100">
-                        {assessmentData.franchisePartnerName || 'N/A'}
-                      </td>
-                      <td className="border border-gray-400 p-2 bg-gray-100">
-                        {assessmentData.franchisePartnerDate || 'N/A'}
-                      </td>
-                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -357,7 +315,7 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
           </button>
         </div>
 
-        {/* Assessment Section */}
+        {/* Assessment Questions Section */}
         <div className="bg-white border border-gray-300 rounded mb-4">
           <button
             onClick={() => setAssessmentExpanded(!assessmentExpanded)}
@@ -368,15 +326,15 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
             ) : (
               <ChevronRight className="w-5 h-5" />
             )}
-            <h2>Assessment Questions</h2>
+            <h2>Assessment Questions - External Examiner Responses</h2>
           </button>
 
           {assessmentExpanded && (
-            <div className="px-6 pb-4">
+            <div className="px-6 pb-4 bg-green-50">
               {/* Question 1 */}
-              <div className="mb-6">
-                <p className="text-sm mb-2">
-                  Have you seen samples of completed work for this assessment?
+              <div className="mb-6 p-4 bg-white rounded border border-green-200">
+                <p className="text-sm mb-3">
+                  <strong>Have you seen samples of completed work for this assessment?</strong>
                 </p>
                 <div className="flex gap-6">
                   <label className="flex items-center gap-2">
@@ -384,22 +342,20 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       type="radio"
                       name="question1"
                       value="yes"
-                      checked={question1 === 'yes'}
-                      onChange={(e) => setQuestion1(e.target.value)}
+                      checked={completedData.question1 === 'yes'}
+                      readOnly
                       className="w-4 h-4"
-                      disabled={isSubmitted}
                     />
-                    <span className="text-sm">Yes</span>
+                    <span className="text-sm font-semibold text-green-700">✓ Yes</span>
                   </label>
                   <label className="flex items-center gap-2">
                     <input
                       type="radio"
                       name="question1"
                       value="no"
-                      checked={question1 === 'no'}
-                      onChange={(e) => setQuestion1(e.target.value)}
+                      checked={completedData.question1 === 'no'}
+                      readOnly
                       className="w-4 h-4"
-                      disabled={isSubmitted}
                     />
                     <span className="text-sm">No</span>
                   </label>
@@ -407,9 +363,9 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
               </div>
 
               {/* Question 2 */}
-              <div className="mb-6">
-                <p className="text-sm mb-2">
-                  Were the standards set for the assessment appropriate for their level?
+              <div className="mb-6 p-4 bg-white rounded border border-green-200">
+                <p className="text-sm mb-3">
+                  <strong>Were the standards set for the assessment appropriate for their level?</strong>
                 </p>
                 <div className="flex gap-6">
                   <label className="flex items-center gap-2">
@@ -417,22 +373,20 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       type="radio"
                       name="question2"
                       value="yes"
-                      checked={question2 === 'yes'}
-                      onChange={(e) => setQuestion2(e.target.value)}
+                      checked={completedData.question2 === 'yes'}
+                      readOnly
                       className="w-4 h-4"
-                      disabled={isSubmitted}
                     />
-                    <span className="text-sm">Yes</span>
+                    <span className="text-sm font-semibold text-green-700">✓ Yes</span>
                   </label>
                   <label className="flex items-center gap-2">
                     <input
                       type="radio"
                       name="question2"
                       value="no"
-                      checked={question2 === 'no'}
-                      onChange={(e) => setQuestion2(e.target.value)}
+                      checked={completedData.question2 === 'no'}
+                      readOnly
                       className="w-4 h-4"
-                      disabled={isSubmitted}
                     />
                     <span className="text-sm">No</span>
                   </label>
@@ -440,9 +394,9 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
               </div>
 
               {/* Question 3 */}
-              <div className="mb-4">
-                <p className="text-sm mb-2">
-                  Were the standards of student performance comparable with similar programmes or subjects in other UK institutions with which you are familiar?
+              <div className="mb-4 p-4 bg-white rounded border border-green-200">
+                <p className="text-sm mb-3">
+                  <strong>Were the standards of student performance comparable with similar programmes or subjects in other UK institutions with which you are familiar?</strong>
                 </p>
                 <div className="flex gap-6">
                   <label className="flex items-center gap-2">
@@ -450,22 +404,20 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       type="radio"
                       name="question3"
                       value="yes"
-                      checked={question3 === 'yes'}
-                      onChange={(e) => setQuestion3(e.target.value)}
+                      checked={completedData.question3 === 'yes'}
+                      readOnly
                       className="w-4 h-4"
-                      disabled={isSubmitted}
                     />
-                    <span className="text-sm">Yes</span>
+                    <span className="text-sm font-semibold text-green-700">✓ Yes</span>
                   </label>
                   <label className="flex items-center gap-2">
                     <input
                       type="radio"
                       name="question3"
                       value="no"
-                      checked={question3 === 'no'}
-                      onChange={(e) => setQuestion3(e.target.value)}
+                      checked={completedData.question3 === 'no'}
+                      readOnly
                       className="w-4 h-4"
-                      disabled={isSubmitted}
                     />
                     <span className="text-sm">No</span>
                   </label>
@@ -486,37 +438,18 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
             ) : (
               <ChevronRight className="w-5 h-5" />
             )}
-            <h2>Feedback summary</h2>
+            <h2>External Examiner Feedback Summary</h2>
           </button>
 
           {feedbackExpanded && (
-            <div className="px-6 pb-6">
-              <div className="mb-4">
-                <label htmlFor="comments" className="block text-sm mb-2">
-                  Comments:
+            <div className="px-6 pb-6 bg-green-50">
+              <div className="mb-4 p-4 bg-white rounded border-2 border-green-300">
+                <label className="block text-sm mb-2">
+                  <strong>External Examiner Comments:</strong>
                 </label>
-                <textarea
-                  id="comments"
-                  value={comments}
-                  onChange={(e) => setComments(e.target.value)}
-                  className="w-full h-80 p-3 border border-gray-300 rounded bg-[#e8edf1] focus:outline-none focus:ring-2 focus:ring-[#0066cc] focus:border-transparent"
-                  disabled={isSubmitted}
-                />
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="completed"
-                  checked={isCompleted}
-                  onChange={(e) => setIsCompleted(e.target.checked)}
-                  className="w-4 h-4"
-                  disabled={isSubmitted}
-                />
-                <label htmlFor="completed" className="text-sm">
-                  I have completed this form and wish to submit it.
-                </label>
-                <Info className="w-5 h-5 text-[#0066cc]" />
+                <div className="w-full p-3 bg-gray-50 border border-gray-300 rounded">
+                  <p className="text-sm text-gray-800 whitespace-pre-line">{completedData.comments}</p>
+                </div>
               </div>
             </div>
           )}
@@ -524,37 +457,36 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
 
         {/* External Examiner Sign-off Section */}
         <div className="bg-white border border-gray-300 rounded p-8 mb-6">
-          <h2 className="bg-gray-200 px-4 py-2 mb-4">External Examiner Sign-off</h2>
+          <h2 className="bg-green-100 px-4 py-2 mb-4 text-green-900">External Examiner Sign-off</h2>
           
           <div className="overflow-x-auto">
             <table className="w-full border-collapse border border-gray-400">
               <thead>
-                <tr className="bg-gray-200">
+                <tr className="bg-green-50">
                   <th className="border border-gray-400 p-2 text-left w-1/3">Role</th>
                   <th className="border border-gray-400 p-2 text-left w-1/3">Name</th>
                   <th className="border border-gray-400 p-2 text-left w-1/3">Date</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="border border-gray-400 p-2">External Examiner</td>
+                <tr className="bg-green-50">
+                  <td className="border border-gray-400 p-2">
+                    <strong>✓ External Examiner</strong>
+                  </td>
                   <td className="border border-gray-400 p-2">
                     <input
                       type="text"
-                      value={externalExaminerSignature}
-                      onChange={(e) => setExternalExaminerSignature(e.target.value)}
-                      className="w-full p-2 border border-gray-300 bg-gray-100"
-                      placeholder="Enter your name"
-                      disabled={isSubmitted}
+                      value={completedData.externalExaminerName}
+                      className="w-full p-2 border border-green-300 bg-green-50"
+                      readOnly
                     />
                   </td>
                   <td className="border border-gray-400 p-2">
                     <input
-                      type="date"
-                      value={externalExaminerDate}
-                      onChange={(e) => setExternalExaminerDate(e.target.value)}
-                      className="w-full p-2 border border-gray-300 bg-gray-100"
-                      disabled={isSubmitted}
+                      type="text"
+                      value={completedData.externalExaminerDate}
+                      className="w-full p-2 border border-green-300 bg-green-50"
+                      readOnly
                     />
                   </td>
                 </tr>
@@ -562,43 +494,41 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
             </table>
           </div>
 
-          {!isSubmitted && (
-            <div className="mt-6 flex flex-col items-center gap-4">
-              <button
-                onClick={handleSubmitSignOff}
-                className="px-8 py-3 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
-              >
-                Submit External Examiner Report
-              </button>
-              <p className="text-sm text-gray-600 text-center">
-                By submitting, you confirm that you have reviewed all student samples and internal moderation documentation. 
-                The Module Leader will be notified by email that the assessment process is complete.
+          <div className="mt-6 p-4 bg-green-50 border-2 border-green-400 rounded">
+            <div className="flex items-center gap-3 mb-3">
+              <CheckCircle className="w-6 h-6 text-green-600" />
+              <p className="text-green-900">
+                <strong>Report Submitted:</strong> {completedData.submittedDate}
               </p>
             </div>
-          )}
-
-          {isSubmitted && (
-            <div className="mt-6 flex justify-center">
-              <div className="text-center p-4 bg-green-50 border border-green-200 rounded">
-                <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                <p className="text-green-800">Report submitted successfully</p>
-                <p className="text-sm text-green-700 mt-1">
-                  Submitted on {externalExaminerDate} by {externalExaminerSignature}
-                </p>
-              </div>
-            </div>
-          )}
+            <p className="text-sm text-green-800">
+              The External Examiner has completed their review and submitted this report. The assessment workflow is now complete.
+            </p>
+          </div>
         </div>
 
-        {/* Download PDF Button */}
-        <div className="flex justify-center mb-6">
+        {/* Action Buttons */}
+        <div className="flex justify-center gap-4 mb-6">
           <button
             onClick={handleDownloadPDF}
-            className="px-8 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+            className="flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
           >
-            <Download className="inline w-4 h-4 mr-2" />
+            <Download className="w-5 h-5" />
             Download Complete Report as PDF
           </button>
+          <button
+            onClick={handleAcknowledge}
+            className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+          >
+            <CheckCircle className="w-5 h-5" />
+            Acknowledge Receipt
+          </button>
+        </div>
+
+        <div className="text-center p-4 bg-blue-50 border border-blue-200 rounded">
+          <p className="text-sm text-blue-800">
+            <strong>Assessment Workflow Complete:</strong> All stages from Assessment Brief Creation through External Examiner review have been completed successfully.
+          </p>
         </div>
       </main>
 

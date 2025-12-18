@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { HelpCircle, Download, AlertCircle } from 'lucide-react';
+import { HelpCircle, AlertCircle, Send } from 'lucide-react';
 import { AssessmentData, StudentSample } from '../App';
 
-interface SampleSelectionProps {
+interface InternalModerationMLSentBackProps {
   onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
   assessmentData: AssessmentData;
   updateAssessmentData: (updates: Partial<AssessmentData>) => void;
+  onViewChange?: (view: 'moderator-view' | 'ml-sent-back' | 'ml-signed-off') => void;
 }
 
-export function SampleSelection({ onNavigate, assessmentData, updateAssessmentData }: SampleSelectionProps) {
+export function InternalModerationMLSentBack({ onNavigate, assessmentData, updateAssessmentData, onViewChange }: InternalModerationMLSentBackProps) {
   const [formData, setFormData] = useState({
     moduleTitle: 'COM416: External examiner feedback',
     moduleCode: 'COM416',
@@ -18,15 +19,15 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
     semester: 'Semester 1',
     numberOfSubmissions: '45',
     numberOfModeratedSubmissions: '5',
-    gradesAppropriate: '',
-    additionalComments: '',
+    gradesAppropriate: 'The grades appear to be generally appropriate and in line with the learning outcomes. However, there are a few instances where the feedback could be more detailed to justify the grade awarded.',
+    moderatorComments: 'Please provide more detailed feedback for students in the 58-65 grade range. The borderline cases need clearer justification for why they received the grade they did. Also, please clarify the marking criteria applied to Assignment 3.',
+    moduleLeaderResponse: assessmentData.internalModerationMLResponse || '',
     isFranchisePartner: false,
-    requiresExternalModeration: true,
-    selectedModerator: assessmentData.internalModeratorName || ''
+    requiresExternalModeration: true
   });
 
-  // Mock data for moderated sample - this would come from the Grade Report
-  const [studentSamples, setStudentSamples] = useState<StudentSample[]>([
+  // Mock data for moderated sample
+  const [studentSamples] = useState<StudentSample[]>([
     { id: 'ST001234', firstName: 'Alice Johnson', grade: '74', workLink: '#' },
     { id: 'ST001235', firstName: 'Bob Williams', grade: '65', workLink: '#' },
     { id: 'ST001236', firstName: 'Charlie Brown', grade: '58', workLink: '#' },
@@ -34,36 +35,24 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
     { id: 'ST001238', firstName: 'Ethan Davis', grade: '35', workLink: '#' }
   ]);
 
-  // Moderator dropdown options
-  const moderators = [
-    'Select a moderator...',
-    'Dr. Sarah Johnson',
-    'Prof. Michael Chen',
-    'Dr. Emily Williams',
-    'Dr. James Anderson',
-    'Prof. Rebecca Taylor',
-    'Dr. David Miller'
-  ];
-
-  const handleSendToModerator = () => {
-    if (!formData.selectedModerator || formData.selectedModerator === 'Select a moderator...') {
-      alert('Please select a moderator before sending.');
+  const handleResubmit = () => {
+    if (!formData.moduleLeaderResponse.trim()) {
+      alert('Please provide a response to the moderator\'s comments before resubmitting.');
       return;
     }
-    
-    if (confirm('Are you sure you want to send this Sample Selection form to the Internal Moderator? They will be notified by email.')) {
-      // Update the shared state with the selected moderator
+
+    if (confirm('Are you sure you want to resubmit this to the Internal Moderator? They will be notified by email that you have addressed their comments.')) {
       updateAssessmentData({
-        internalModeratorName: formData.selectedModerator
+        internalModerationMLResponse: formData.moduleLeaderResponse,
+        internalModerationStatus: 'resubmitted'
       });
-      alert('Sample Selection form has been sent to the Internal Moderator. They have been notified by email.');
-      // Navigate to Internal Moderation page
-      onNavigate('internal-moderation');
+      alert('Internal Moderation has been resubmitted to the Internal Moderator. They have been notified by email.');
     }
   };
 
-  const handleDownloadPDF = () => {
-    alert('Downloading Sample Selection form as PDF...\n\nIn a production environment, this would generate and download a PDF of the sample selection form.');
+  const handleResponseChange = (value: string) => {
+    setFormData({ ...formData, moduleLeaderResponse: value });
+    updateAssessmentData({ internalModerationMLResponse: value });
   };
 
   return (
@@ -100,13 +89,13 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
             </button>
             <button 
               onClick={() => onNavigate('sample-selection')}
-              className="py-4 text-[#0066cc] hover:text-[#004499] border-b-2 border-[#0066cc]"
+              className="py-4 text-[#0066cc] hover:text-[#004499]"
             >
               Sample Selection
             </button>
             <button 
               onClick={() => onNavigate('internal-moderation')}
-              className="py-4 text-[#0066cc] hover:text-[#004499]"
+              className="py-4 text-[#0066cc] hover:text-[#004499] border-b-2 border-[#0066cc]"
             >
               Internal Moderation
             </button>
@@ -125,16 +114,45 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto p-6">
-        <div className="bg-white border border-gray-300 rounded p-8">
-          <h1 className="text-center text-2xl mb-4">Sample Selection</h1>
-          
-          {/* Note about Sample Selection */}
-          <div className="mb-8 p-4 bg-blue-50 border-l-4 border-blue-600 rounded">
-            <p className="text-sm text-blue-800">
-              <strong>Note:</strong> This is for course leader sample selection following grading. 
-              Please select representative student samples before sending to the Internal Moderator for review.
-            </p>
+        {/* View Toggle Buttons */}
+        <div className="mb-6 bg-white border border-gray-300 rounded p-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm mr-2">View:</span>
+            <button
+              onClick={() => onViewChange?.('moderator-view')}
+              className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              Internal Moderator View
+            </button>
+            <button
+              className="px-4 py-2 rounded transition-colors bg-yellow-600 text-white"
+            >
+              ML: Sent Back for Clarification
+            </button>
+            <button
+              onClick={() => onViewChange?.('ml-signed-off')}
+              className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              ML: Signed Off
+            </button>
           </div>
+        </div>
+
+        {/* Status Banner - Yellow for Action Required */}
+        <div className="bg-yellow-50 border-l-4 border-yellow-600 p-6 mb-6 rounded">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+            <div className="flex-1">
+              <h3 className="text-yellow-800 mb-2">Action Required - Sent Back by Internal Moderator</h3>
+              <p className="text-sm text-yellow-700">
+                The Internal Moderator has requested clarification. Please review their comments below, provide your response, and resubmit the form.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white border border-gray-300 rounded p-8">
+          <h1 className="text-center text-2xl mb-8">Internal Moderation Form - Module Leader Response</h1>
 
           {/* Module Information Section */}
           <div className="space-y-4 mb-8">
@@ -145,7 +163,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.moduleTitle}
-                onChange={(e) => setFormData({ ...formData, moduleTitle: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -156,7 +173,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.moduleCode}
-                onChange={(e) => setFormData({ ...formData, moduleCode: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -167,7 +183,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.moduleLeader}
-                onChange={(e) => setFormData({ ...formData, moduleLeader: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -178,7 +193,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.level}
-                onChange={(e) => setFormData({ ...formData, level: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -189,7 +203,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.academicYear}
-                onChange={(e) => setFormData({ ...formData, academicYear: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -200,7 +213,6 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <input
                 type="text"
                 value={formData.semester}
-                onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -225,57 +237,11 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
                 readOnly
               />
             </div>
-
-            <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
-              <label className="text-right pt-2">Franchise Partner:</label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={formData.isFranchisePartner}
-                  onChange={(e) => setFormData({ ...formData, isFranchisePartner: e.target.checked })}
-                />
-                <span className="text-sm">This module is for a Franchise Partner</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
-              <label className="text-right pt-2">External Moderation Required:</label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={formData.requiresExternalModeration}
-                  onChange={(e) => setFormData({ ...formData, requiresExternalModeration: e.target.checked })}
-                />
-                <span className="text-sm">Requires external moderation (All levels except normal undergraduate first year)</span>
-              </label>
-            </div>
-
-            <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
-              <label className="text-right pt-2">Select Internal Moderator:</label>
-              <select
-                value={formData.selectedModerator}
-                onChange={(e) => {
-                  setFormData({ ...formData, selectedModerator: e.target.value });
-                  updateAssessmentData({ internalModeratorName: e.target.value });
-                }}
-                className="border border-gray-300 px-3 py-2 bg-gray-200"
-              >
-                {moderators.map((moderator) => (
-                  <option key={moderator} value={moderator}>{moderator}</option>
-                ))}
-              </select>
-            </div>
           </div>
 
           {/* Student Sample Section */}
           <div className="mb-8">
             <h2 className="bg-gray-200 px-4 py-2 mb-4">Student Names/Numbers & Grades of Moderated Sample</h2>
-            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded">
-              <p className="text-sm">
-                <strong>Note:</strong> Internal moderation samples must be properly representative and include borderline cases between each grade band. 
-                The sample size must represent 10% of submissions which should not be more than 15 or less than 5 (or all assignments if less than 5) assignments for large or small modules.
-              </p>
-            </div>
             
             <div className="overflow-x-auto">
               <table className="w-full border-collapse border border-gray-400">
@@ -305,19 +271,62 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
             </div>
           </div>
 
+          {/* Moderation Review Section */}
+          <div className="space-y-4 mb-8">
+            <h2 className="bg-gray-200 px-4 py-2 mb-4">Moderation Review</h2>
+
+            <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
+              <label className="text-right pt-2">Are the grades and feedback comments appropriate?</label>
+              <div className="w-full p-3 border border-gray-300 bg-gray-50 rounded">
+                <p className="text-sm text-gray-700">{formData.gradesAppropriate}</p>
+              </div>
+            </div>
+
+            {/* Moderator Comments - Highlighted in Yellow */}
+            <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
+              <label className="text-right pt-2">Internal Moderator Comments:</label>
+              <div className="w-full p-4 border-2 border-yellow-400 bg-yellow-50 rounded">
+                <p className="text-sm mb-1"><strong className="text-yellow-900">⚠️ Moderator Feedback:</strong></p>
+                <p className="text-sm text-gray-800">{formData.moderatorComments}</p>
+              </div>
+            </div>
+
+            {/* Module Leader Response - Editable */}
+            <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
+              <label className="text-right pt-2">Your Response <span className="text-red-600">*</span></label>
+              <div>
+                <textarea
+                  value={formData.moduleLeaderResponse}
+                  onChange={(e) => handleResponseChange(e.target.value)}
+                  className="w-full h-40 p-3 border-2 border-blue-300 bg-white rounded"
+                  placeholder="Provide your response to the moderator's comments. Detail any actions taken, changes made, or clarifications needed..."
+                />
+                <p className="text-sm text-gray-600 mt-2">
+                  <strong>Required:</strong> Please address each point raised by the moderator and explain any actions you have taken.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 bg-red-50 border border-red-200 rounded">
+              <p className="text-sm text-red-800">
+                <strong>Important:</strong> If the actions identified result in changes to grades/marks, it is the module leader's responsibility to ensure the correct marks are uploaded.
+              </p>
+            </div>
+          </div>
+
           {/* Action Buttons */}
           <div className="border-t-2 border-gray-300 pt-6">
             <div className="flex justify-center">
-              {/* Send to Internal Moderator */}
               <div className="text-center">
                 <button
-                  onClick={handleSendToModerator}
-                  className="px-8 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                  onClick={handleResubmit}
+                  className="flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 >
-                  Send to Internal Moderator
+                  <Send className="w-5 h-5" />
+                  Resubmit to Internal Moderator
                 </button>
                 <p className="text-sm text-gray-600 mt-2">
-                  Send this sample selection to the Internal Moderator for review and sign-off.
+                  Submit your response and changes to the Internal Moderator for review.
                 </p>
               </div>
             </div>
@@ -337,7 +346,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
           </a>
           <span className="text-gray-400">/</span>
           <a href="#" className="text-[#0066cc] hover:text-[#004499]">
-            Sample Selection
+            Internal Moderation
           </a>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { HelpCircle, Download, CheckCircle, AlertCircle } from 'lucide-react';
 import { AssessmentData, StudentSample } from '../App';
+import { InternalModerationMLSentBack } from './InternalModerationMLSentBack';
+import { InternalModerationMLSignedOff } from './InternalModerationMLSignedOff';
 
 interface InternalModerationProps {
   onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
@@ -9,6 +11,8 @@ interface InternalModerationProps {
 }
 
 export function InternalModeration({ onNavigate, assessmentData, updateAssessmentData }: InternalModerationProps) {
+  const [currentView, setCurrentView] = useState<'moderator-view' | 'ml-sent-back' | 'ml-signed-off'>('moderator-view');
+  
   const [formData, setFormData] = useState({
     moduleTitle: 'COM416: External examiner feedback',
     moduleCode: 'COM416',
@@ -42,6 +46,15 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
 
   const [moderationStatus, setModerationStatus] = useState<'draft' | 'sent-to-moderator' | 'sent-back' | 'moderator-approved' | 'sent-to-external'>('sent-to-moderator');
   const [moderatorComments, setModeratorComments] = useState('');
+  
+  // If view is ML-specific, render those components AFTER all hooks
+  if (currentView === 'ml-sent-back') {
+    return <InternalModerationMLSentBack onNavigate={onNavigate} assessmentData={assessmentData} updateAssessmentData={updateAssessmentData} onViewChange={setCurrentView} />;
+  }
+  
+  if (currentView === 'ml-signed-off') {
+    return <InternalModerationMLSignedOff onNavigate={onNavigate} assessmentData={assessmentData} updateAssessmentData={updateAssessmentData} onViewChange={setCurrentView} />;
+  }
 
   const handleSendToModerator = () => {
     if (!formData.gradesAppropriate) {
@@ -64,6 +77,7 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
     if (confirm('Are you sure you want to sign off this Internal Moderation? The Module Leader will be notified by email.')) {
       alert('Internal Moderation has been signed off. The Module Leader has been notified by email.');
       setModerationStatus('moderator-approved');
+      setCurrentView('ml-signed-off');
     }
   };
 
@@ -77,6 +91,7 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
       alert('Internal Moderation has been sent back to the Module Leader with your comments. They have been notified by email.');
       setFormData({ ...formData, additionalComments: moderatorComments });
       setModerationStatus('sent-back');
+      setCurrentView('ml-sent-back');
     }
   };
 
@@ -176,6 +191,43 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto p-6">
+        {/* View Toggle Buttons */}
+        <div className="mb-6 bg-white border border-gray-300 rounded p-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm mr-2">View:</span>
+            <button
+              onClick={() => setCurrentView('moderator-view')}
+              className={`px-4 py-2 rounded transition-colors ${
+                currentView === 'moderator-view'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Internal Moderator View
+            </button>
+            <button
+              onClick={() => setCurrentView('ml-sent-back')}
+              className={`px-4 py-2 rounded transition-colors ${
+                currentView === 'ml-sent-back'
+                  ? 'bg-yellow-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              ML: Sent Back for Clarification
+            </button>
+            <button
+              onClick={() => setCurrentView('ml-signed-off')}
+              className={`px-4 py-2 rounded transition-colors ${
+                currentView === 'ml-signed-off'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              ML: Signed Off
+            </button>
+          </div>
+        </div>
+
         {/* Status Banners */}
         {moderationStatus === 'sent-to-moderator' && (
           <div className="bg-blue-50 border-l-4 border-blue-600 p-6 mb-6 rounded">

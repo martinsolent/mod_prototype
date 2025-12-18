@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FeedbackForm } from './components/FeedbackForm';
 import { PeerReview } from './components/PeerReview';
+import { PeerReviewerView } from './components/PeerReviewerView';
 import { AssessmentBriefCreation } from './components/AssessmentBriefCreation';
 import { SampleSelection } from './components/SampleSelection';
 import { InternalModeration } from './components/InternalModeration';
@@ -52,6 +53,9 @@ export interface AssessmentData {
   peerReviewDate: string;
   peerReviewerDate: string;
   peerReviewSignedOff: boolean;
+  peerReviewerOverallComments: string;
+  moduleLeaderResponseToReviewer: string;
+  peerReviewSentBack: boolean;
   peerReviewComments: {
     briefingSheet: string;
     compliesDescriptor: string;
@@ -85,6 +89,8 @@ export interface AssessmentData {
   isFranchisePartner: boolean;
   requiresExternalModeration: boolean;
   internalModerationComplete: boolean;
+  internalModerationStatus?: string;
+  internalModerationMLResponse?: string;
   
   // External Examiner Fields
   externalExaminerQuestion1: string;
@@ -140,6 +146,9 @@ export default function App() {
     peerReviewDate: '',
     peerReviewerDate: '',
     peerReviewSignedOff: false,
+    peerReviewerOverallComments: '',
+    moduleLeaderResponseToReviewer: '',
+    peerReviewSentBack: false,
     peerReviewComments: {
       briefingSheet: '',
       compliesDescriptor: '',
@@ -179,6 +188,8 @@ export default function App() {
     isFranchisePartner: false,
     requiresExternalModeration: true,
     internalModerationComplete: false,
+    internalModerationStatus: 'Pending',
+    internalModerationMLResponse: 'Awaiting response from the marking team.',
     
     // External Examiner Fields
     externalExaminerQuestion1: '',

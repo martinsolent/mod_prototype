@@ -10,19 +10,19 @@ interface AssessmentBriefCreationProps {
 
 export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAssessmentData }: AssessmentBriefCreationProps) {
   const [formData, setFormData] = useState({
-    moduleTitle: assessmentData.moduleTitle,
+    moduleTitle: assessmentData.moduleTitle || 'User Experience',
     moduleCode: assessmentData.moduleCode,
     moduleLeader: assessmentData.moduleLeader,
-    level: assessmentData.level,
-    assessmentTitle: assessmentData.assessmentTitle,
-    assessmentNumber: assessmentData.assessmentNumber,
+    level: assessmentData.level || '4',
+    assessmentTitle: assessmentData.assessmentTitle || 'User Research Project',
+    assessmentNumber: assessmentData.assessmentNumber || 'AE1',
     assessmentType: assessmentData.assessmentType,
-    mustPass: assessmentData.mustPass,
-    restrictions: assessmentData.restrictions,
+    mustPass: assessmentData.mustPass || 'NO',
+    restrictions: assessmentData.restrictions || '2000 +/-10%',
     consequenceOption: assessmentData.consequenceOption,
     individualGroup: assessmentData.individualGroup,
     groupMarking: assessmentData.groupMarking,
-    assessmentWeighting: assessmentData.assessmentWeighting,
+    assessmentWeighting: assessmentData.assessmentWeighting || '100%',
     issueDate: assessmentData.issueDate,
     handInDate: assessmentData.handInDate,
     plannedFeedbackDate: assessmentData.plannedFeedbackDate,
@@ -47,20 +47,21 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
     'Prof. Rebecca Taylor'
   ];
 
+  const moduleLeaders = [
+    'Select a module leader...',
+    'Dr. Jane Smith',
+    'Dr. Sarah Johnson',
+    'Prof. Michael Chen',
+    'Dr. Emily Williams',
+    'Dr. James Anderson'
+  ];
+
   const handleSaveDraft = () => {
     alert('Assessment Brief has been saved as draft.');
   };
 
   const handleSubmitForReview = () => {
-    if (!formData.internalPeerReviewer || formData.internalPeerReviewer === 'Select a reviewer...') {
-      alert('Please select an Internal Peer Reviewer before submitting for review.');
-      return;
-    }
-    
-    if (confirm(`Are you sure you want to submit this Assessment Brief to ${formData.internalPeerReviewer} for peer review? They will be notified by email.`)) {
-      alert(`Assessment Brief has been submitted for peer review. ${formData.internalPeerReviewer} has been notified by email.`);
-      onNavigate('peer-review');
-    }
+    onNavigate('peer-review');
   };
 
   const [learningOutcomes, setLearningOutcomes] = useState(['']);
@@ -235,12 +236,17 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
             {/* Module Leader */}
             <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
               <label className="text-left pt-2">Module Leader:</label>
-              <input
-                type="text"
+              <select
                 value={formData.moduleLeader}
                 onChange={(e) => setFormData({ ...formData, moduleLeader: e.target.value })}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
-              />
+              >
+                {moduleLeaders.map((leader, index) => (
+                  <option key={index} value={leader}>
+                    {leader}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Level */}
@@ -947,28 +953,6 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
             <h4 className="mb-2">Guidance for online submission through Solent Online Learning (SOL)</h4>
             <p className="text-sm mb-2">
               <a href="#" className="text-[#0066cc] hover:text-[#004499] underline">Online Submission</a>
-            </p>
-          </div>
-
-          {/* Internal Peer Reviewer Selection */}
-          <div className="mb-8">
-            <h2 className="bg-gray-200 px-4 py-2 mb-4">Peer Review</h2>
-            <div className="grid grid-cols-[200px_1fr] gap-4">
-              <label className="text-right pt-2">Internal Peer Reviewer:</label>
-              <select
-                value={formData.internalPeerReviewer}
-                onChange={(e) => setFormData({ ...formData, internalPeerReviewer: e.target.value })}
-                className="border border-gray-300 px-3 py-2 bg-gray-100"
-              >
-                {peerReviewers.map((reviewer, index) => (
-                  <option key={index} value={reviewer}>
-                    {reviewer}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <p className="text-sm text-gray-600 mt-2 ml-[200px]">
-              Select an internal peer reviewer who will review this assessment brief.
             </p>
           </div>
 
