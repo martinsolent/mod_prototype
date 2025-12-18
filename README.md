@@ -1,10 +1,12 @@
 
   # Assessment & Moderation Workflow
 
-  [Link to Prototype](https://anime-boho-02334654.figma.site)
+ This is a proposal prototype to streamline academic quality assurance through a multi-stage assessment moderation process. Guides module leaders, peer reviewers, internal moderators, and external examiners through assessment brief creation, peer review, sample selection, internal moderation, and external examination. Features role-based workflows, real-time collaboration tracking, sign-off mechanisms, and email notifications at key handoff points.
 
-A profile prototype type to streamline academic quality assurance through a multi-stage assessment moderation process. Guides module leaders, peer reviewers, internal moderators, and external examiners through assessment brief creation, peer review, sample selection, internal moderation, and external examination. Features role-based workflows, real-time collaboration tracking, sign-off mechanisms, and email notifications at key handoff points.
+ 
+  [Link to Figma (static) Prototype](https://anime-boho-02334654.figma.site)
 
+<!---
   This is a code bundle for Copy Design to Figma. The original project is available at https://www.figma.com/design/LopJqGSBbtyi6pGRIXJQWf/Copy-Design-to-Figma.
 
   ## Running the code
@@ -13,6 +15,7 @@ A profile prototype type to streamline academic quality assurance through a mult
 
   Run `npm run dev` to start the development server.
 
+ --->
   
   
  ## Workflow Stages Overview
