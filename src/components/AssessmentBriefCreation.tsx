@@ -305,8 +305,7 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
             {/* Assessment Type */}
             <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
               <label className="text-left pt-2">Assessment Type:</label>
-              <input
-                type="text"
+              <select
                 value={formData.assessmentType}
                 onChange={(e) => {
                   const newValue = e.target.value;
@@ -314,8 +313,13 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
                   updateAssessmentData({ assessmentType: newValue });
                 }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
-                placeholder="e.g., Essay, Report, Presentation, etc."
-              />
+              >
+                <option value="">Select assessment type...</option>
+                <option value="Report">Report</option>
+                <option value="Portfolio">Portfolio</option>
+                <option value="Presentation">Presentation</option>
+                <option value="Artefact">Artefact</option>
+              </select>
             </div>
 
             {/* Must Pass */}
