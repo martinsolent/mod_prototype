@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HelpCircle, CheckCircle, ArrowRight } from 'lucide-react';
 import { AssessmentData, StudentSample } from '../App';
 
@@ -10,7 +10,7 @@ interface InternalModerationMLSignedOffProps {
 }
 
 export function InternalModerationMLSignedOff({ onNavigate, assessmentData, updateAssessmentData, onViewChange }: InternalModerationMLSignedOffProps) {
-  const [formData] = useState({
+  const [formData, setFormData] = useState({
     moduleTitle: assessmentData.moduleTitle,
     moduleCode: assessmentData.moduleCode,
     moduleLeader: assessmentData.moduleLeader,
@@ -31,6 +31,22 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
     solentModeratorCompleted: assessmentData.solentModeratorCompleted || false,
     requiresExternalModeration: true
   });
+
+  // Sync Solent Moderator fields when shared state updates
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      franchisePartnerName: assessmentData.franchisePartnerName || '',
+      franchisePartnerDate: assessmentData.franchisePartnerDate || '',
+      isFranchisePartner: assessmentData.isFranchisePartner || false,
+      solentModeratorCompleted: assessmentData.solentModeratorCompleted || false,
+    }));
+  }, [
+    assessmentData.franchisePartnerName,
+    assessmentData.franchisePartnerDate,
+    assessmentData.isFranchisePartner,
+    assessmentData.solentModeratorCompleted,
+  ]);
 
   // Use shared student samples from assessmentData (read-only for prototype)
   const studentSamples: StudentSample[] = assessmentData.studentSamples;
