@@ -569,4 +569,74 @@ The workflows are **independent but complementary** - both are necessary for com
 
 ---
 
-*This documentation ensures clear separation between pre-assessment design approval and post-assessment marking quality assurance.*
+## Franchise Partner Moderation Flow (Workflow B Variant)
+
+### When Franchise Partner Route is Activated
+When "This module is for a Franchise Partner" is **checked** during Internal Moderation, the workflow includes an additional approval step by the **Solent Moderator Franchise Partner**.
+
+### Franchise Partner Workflow Stages
+
+#### **Stage 1: Internal Moderator Signs Off**
+- **Actor:** Internal Moderator
+- **Action:** Reviews samples and completes internal moderation form
+- **Decision:** 
+  - **Sign Off:** Routes to Franchise Partner Sign Off view (new step)
+  - **Send Back:** Routes to Module Leader with feedback (unchanged)
+
+#### **Stage 2: Solent Moderator Franchise Partner Sign Off** ⭐ NEW VIEW
+- **Component:** `SolentModeratorFranchisePartnerSignOff.tsx`
+- **Actor:** Solent Moderator (acting on behalf of Franchise Partner)
+- **Timing:** After internal moderator signs off a franchise partner module
+- **Purpose:** Final approval from Solent for franchise partner modules
+- **Key Actions:**
+  - Review student samples and internal moderation assessment
+  - Verify grades are appropriate for franchise partner standards
+  - Sign off with name and date
+  - **Decision Options:**
+    - ✅ **Send to External Examiner** - Module approved and ready for external review
+    - ↩️ **Send Back to Internal Moderator** - Request further review or changes
+
+#### **Stage 3: Module Leader Confirmation** (unchanged)
+- **View:** ML: Sign Off
+- **Actor:** Module Leader
+- **Purpose:** Final confirmation that all moderation is complete
+- **Next Step:** External Examiner Feedback
+
+### Franchise Partner Flow Diagram
+
+```mermaid
+flowchart TD
+    IM["Internal Moderator<br/>Completes Moderation"] --> FP{Is Franchise<br/>Partner?}
+    
+    FP -->|No| MLSO["Module Leader<br/>Sign Off View<br/>(ML: Sign Off)"]
+    FP -->|Yes| FPSO["⭐ Solent Moderator<br/>Franchise Partner<br/>Sign Off View"]
+    
+    FPSO --> FPDEC{Franchise Partner<br/>Decision}
+    FPDEC -->|Approve| MLSO
+    FPDEC -->|Send Back| SENDBACK["Send Back to<br/>Internal Moderator"]
+    SENDBACK --> IM
+    
+    MLSO --> EEV["External Examiner<br/>View"]
+    
+    classDef fpStyle fill:#fff8e1,stroke:#ffa726,stroke-width:3px
+    classDef newStyle fill:#ffeb3b,stroke:#f57f17,stroke-width:3px
+    class FPSO newStyle
+    class FP fpStyle
+```
+
+### Key Data Flow for Franchise Partners
+1. **Franchise Partner Flag:** `assessmentData.isFranchisePartner` (boolean)
+2. **Franchise Partner Name:** `assessmentData.franchisePartnerName` (string)
+3. **Franchise Partner Date:** `assessmentData.franchisePartnerDate` (date)
+4. **Sign-Off Table Row:** "Signed Solent Moderator Franchise Partners ONLY" appears in Internal Moderation form
+5. **Calendar Date Picker:** Date field includes `type="date"` calendar selector
+
+### Routing Logic
+- **Internal Moderation → Check `formData.isFranchisePartner`**
+  - If true and moderator signs off: Route to `'franchise-partner-sign-off'` view
+  - If false and moderator signs off: Route to `'ml-signed-off'` view (existing flow)
+  - If moderator sends back: Route to `'ml-sent-back'` view (existing flow)
+
+---
+
+*This documentation ensures clear separation between pre-assessment design approval and post-assessment marking quality assurance, with special handling for franchise partner modules.*
