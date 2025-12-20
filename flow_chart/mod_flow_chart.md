@@ -44,8 +44,10 @@ flowchart TD
     IM10 --> IM11[Internal Moderator signs]
     IM11 --> IM12[Module Leader signs<br/>acknowledgement]
     IM12 --> IM13{Franchise<br/>Partner?}
-    IM13 -->|Yes| IM14[Franchise Partner signs]
-    IM14 --> IM15{External<br/>Moderation<br/>Required?}
+    IM13 -->|Yes| IM14[Solent Moderator
+    final compliance check]
+    IM14 -->|Send back| IM5
+    IM14 -->|Approve| IM15{External<br/>Moderation<br/>Required?}
     IM13 -->|No| IM15
     
     IM15 -->|No| End([End - Process Complete])
@@ -96,12 +98,12 @@ flowchart TD
 - Review is prepared for Internal Moderator
 - Send to Internal Moderator with email notification
 
-### 4. **Internal Moderation** (Internal Moderator + Module Leader)
+### 4. **Internal Moderation** (Internal Moderator + Module Leader + Solent Moderator)
 - Internal Moderator reviews selected samples
 - Can request clarification from Module Leader (iterative loop)
 - Module Leader responds to clarification requests
 - Complete moderation review with sign-offs
-- Optional: Franchise Partner sign-off
+- If Franchise Partner module: Solent Moderator performs final compliance moderation (can approve or send back to franchise/module leader)
 - Decision: Send to External Examiner or complete
 
 ### 5. **External Examiner Review** (External Examiner)
@@ -117,7 +119,7 @@ flowchart TD
 - **Peer Review Approved?** - Determines if brief needs revision
 - **Samples Selected?** - Validates sample selection is complete
 - **Clarification Needed?** - Triggers iterative communication loop
-- **Franchise Partner?** - Adds additional sign-off step
+- **Franchise Partner?** - Adds Solent Moderator compliance step (approve or send back to franchise/module leader)
 - **External Moderation Required?** - Routes to External Examiner or ends process
 - **Review Complete?** - Final validation before submission
 
@@ -153,6 +155,7 @@ All pages share the same `AssessmentData` state, ensuring:
 - Internal Moderation (Moderator / ML Sent Back / ML Signed Off)
     - Reads: `studentSamples` and module info
     - Writes: `gradesAppropriate`, `additionalComments`, `moduleLeaderResponse`, `internalModeratorName`, `internalModeratorDate`, `moduleLeaderSignName`, `moduleLeaderSignDate`, `franchisePartnerName`, `franchisePartnerDate`, `isFranchisePartner`, `requiresExternalModeration`, `internalModerationComplete`, `internalModerationStatus`, `internalModerationMLResponse`
+    - Solent Moderator view additionally writes: `solentModeratorComments`
 
 - External Examiner
     - Reads: module info and samples
