@@ -135,3 +135,34 @@ All pages share the same `AssessmentData` state, ensuring:
 - Student samples are consistent
 - Sign-offs are tracked
 - Clarification history is maintained
+
+## State Read/Write Map
+
+- Assessment Brief Creation
+    - Reads: `peerReviewSignedOff`
+    - Writes: `moduleTitle`, `moduleCode`, `moduleLeader`, `level`, `assessmentTitle`, `assessmentNumber`, `assessmentType`, `mustPass`, `restrictions`, `consequenceOption`, `individualGroup`, `groupMarking`, `assessmentWeighting`, `issueDate`, `handInDate`, `plannedFeedbackDate`, `modeOfSubmission`, `anonymousMarking`, `assessmentTask`, `assessmentCriteria`, `aiGuidance`, `aiPolicy`, `learningOutcomes`, `livingCV1`, `livingCV2`, `internalPeerReviewer`
+
+- Peer Review (Module Leader / Peer Reviewer / ML Sent Back / ML Signed Off)
+    - Reads: brief fields listed above
+    - Writes: `peerReviewComments`, `peerReviewChecks`, `moduleLeaderComments`, `peerReviewerOverallComments`, `moduleLeaderResponseToReviewer`, `passGrade`, `aggregated`, `peerReviewSignedOff`, `peerReviewSentBack`, `moduleLeaderSignature`, `peerReviewDate`, `peerReviewerDate`
+
+- Sample Selection
+    - Reads: `moduleTitle`, `moduleCode`, `moduleLeader`, `level`, `academicYear`, `semester`
+    - Writes: `internalModeratorName` (on send); optionally uses local `studentSamples`
+
+- Internal Moderation (Moderator / ML Sent Back / ML Signed Off)
+    - Reads: `studentSamples` and module info
+    - Writes: `gradesAppropriate`, `additionalComments`, `moduleLeaderResponse`, `internalModeratorName`, `internalModeratorDate`, `moduleLeaderSignName`, `moduleLeaderSignDate`, `franchisePartnerName`, `franchisePartnerDate`, `isFranchisePartner`, `requiresExternalModeration`, `internalModerationComplete`, `internalModerationStatus`, `internalModerationMLResponse`
+
+- External Examiner
+    - Reads: module info and samples
+    - Current implementation: manages `externalExaminerSignature` and `externalExaminerDate` locally inside `FeedbackForm` (not persisted to `AssessmentData` yet); submission toggles a local `isSubmitted` state.
+
+## Navigation Triggers
+
+- `onNavigate('peer-review')`: From Assessment Brief to Peer Review
+- `onNavigate('sample-selection')`: Top-tab navigation; flow proceeds after Peer Review
+- `onNavigate('internal-moderation')`: From Sample Selection “Send to Moderator”
+- `onNavigate('feedback')`: Top-tab navigation; typically after Internal Moderation
+
+All navigation is handled by `App.tsx` via a single `currentPage` state—no URL routing.
