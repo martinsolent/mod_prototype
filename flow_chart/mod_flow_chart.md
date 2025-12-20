@@ -38,12 +38,12 @@ flowchart TD
     SS1 --> SS2[10% of submitted work<br/>Min 5, Max 15<br/>Select bottom, middle, top]
     SS2 --> SS3{Samples selected?}
     SS3 -->|No| SS1
-    SS3 -->|Yes| SS4[Send samples to Internal Moderator<br/>📧 notification]
+        SS3 -->|Yes| SS4[Send samples to<br/>Internal Moderator<br/>📧 notification]
     SS4 --> IM[Internal Moderation]
     
     IM --> IM1[Internal Moderator reviews<br/>grades and feedback]
     IM1 --> IM2{Is clarification needed<br/>on marking?}
-    IM2 -->|Yes| IM3[Send feedback back to Module Leader<br/>📧 notification]
+        IM2 -->|Yes| IM3[Send feedback back to<br/>Module Leader<br/>📧 notification]
     IM3 --> IM4[Module Leader responds]
     IM4 --> IM2
     IM2 -->|No| IM5[Internal Moderator signs]
