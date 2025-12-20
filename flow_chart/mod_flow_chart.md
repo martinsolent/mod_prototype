@@ -8,14 +8,14 @@ flowchart TD
     AB2 --> AB3[Assign Internal<br/>Peer Reviewer]
     AB3 --> AB4{Is assessment brief complete?}
     AB4 -->|No| AB1
-    AB4 -->|Yes| AB5[Submit assessment brief for Peer Review]
+    AB4 -->|Yes| AB5[Submit assessment brief<br/>for Peer Review]
     AB5 --> PR[Peer Review Process]
     
     PR --> PR1[Peer Reviewer evaluates<br/>and completes checklist]
-    PR1 --> PR2[Add feedback comments and<br/>recommendations]
+    PR1 --> PR2[Add feedback comments<br/>and recommendations]
     PR2 --> PR3{Is Peer Review approved?}
     PR3 -->|No - needs changes| AB1
-    PR3 -->|Yes| PR4[Module Leader & Reviewer sign off]
+    PR3 -->|Yes| PR4[Module Leader & Reviewer<br/>sign off]
     PR4 --> EndA([End Pre-assessment<br/>Approved & Published])
     
     classDef start fill:#90EE90
@@ -41,8 +41,7 @@ flowchart TD
     SS3 -->|Yes| SS4[Send samples to Internal Moderator<br/>📧 notification]
     SS4 --> IM[Internal Moderation]
     
-    IM --> IM1[Internal Moderator reviews
-    grades & feedback]
+    IM --> IM1[Internal Moderator reviews<br/>grades and feedback]
     IM1 --> IM2{Is clarification needed<br/>on marking?}
     IM2 -->|Yes| IM3[Send feedback back to Module Leader<br/>📧 notification]
     IM3 --> IM4[Module Leader responds]
@@ -57,8 +56,7 @@ flowchart TD
     
     IM8 -->|No| EndB([End Post-assessment<br/>Process Complete])
     IM8 -->|Yes| EE[External Examiner Review]
-    EE --> EE1[External Examiner reviews
-    samples and answers questions]
+    EE --> EE1[External Examiner reviews<br/>samples and answers<br/>assessment questions]
     EE1 --> EE2[Provide recommendations<br/>and sign with date]
     EE2 --> EndB
     
