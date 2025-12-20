@@ -89,6 +89,7 @@ export interface AssessmentData {
   franchisePartnerName: string;
   franchisePartnerDate: string;
   isFranchisePartner: boolean;
+  solentModeratorCompleted: boolean;
   requiresExternalModeration: boolean;
   internalModerationComplete: boolean;
   internalModerationStatus?: string;
@@ -188,6 +189,7 @@ export default function App() {
     franchisePartnerName: '',
     franchisePartnerDate: '',
     isFranchisePartner: false,
+    solentModeratorCompleted: false,
     requiresExternalModeration: true,
     internalModerationComplete: false,
     internalModerationStatus: 'Pending',

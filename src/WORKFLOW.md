@@ -203,8 +203,8 @@ flowchart TD
 - **Purpose:** Select representative samples for quality review
 - **Key Actions:**
   - Review complete list of student submissions
-  - Select samples across grade ranges (high, middle, low, borderline)
-  - Ensure representative sample of marking
+  - Select 10% of submitted work OR between 5–15 samples (whichever applies)
+  - Ensure stratified selection from bottom, middle, and top performers
   - Assign Internal Moderator
   - Submit for internal moderation
 

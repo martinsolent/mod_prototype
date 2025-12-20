@@ -39,7 +39,8 @@ export function SolentModeratorFranchisePartnerSignOff({
     if (confirm('Are you sure you want to sign off this moderation? This will send the form to the External Examiner and record your comments.')) {
       updateAssessmentData({
         internalModerationStatus: 'sent-to-external',
-        solentModeratorComments: formData.solentModeratorComments
+        solentModeratorComments: formData.solentModeratorComments,
+        solentModeratorCompleted: true
       });
       alert('Solent Moderator has signed off. The External Examiner has been notified by email.');
       onNavigate('feedback');

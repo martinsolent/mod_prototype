@@ -28,6 +28,7 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
     franchisePartnerName: assessmentData.franchisePartnerName || '',
     franchisePartnerDate: assessmentData.franchisePartnerDate || '',
     isFranchisePartner: assessmentData.isFranchisePartner || false,
+    solentModeratorCompleted: assessmentData.solentModeratorCompleted || false,
     requiresExternalModeration: true
   });
 
@@ -349,9 +350,9 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
                       />
                     </td>
                   </tr>
-                  <tr className={formData.isFranchisePartner ? "bg-yellow-100" : "bg-gray-50"}>
-                    <td className={`border border-gray-400 p-2 font-semibold ${formData.isFranchisePartner ? "text-yellow-900" : "text-gray-500"}`}>
-                      ⭐ Signed Solent Moderator Franchise Partners ONLY
+                  <tr className={formData.isFranchisePartner ? (formData.solentModeratorCompleted ? "bg-green-50" : "bg-yellow-100") : "bg-gray-50"}>
+                    <td className={`border border-gray-400 p-2 font-semibold ${formData.isFranchisePartner ? (formData.solentModeratorCompleted ? "text-green-900" : "text-yellow-900") : "text-gray-500"}`}>
+                      {formData.isFranchisePartner ? (formData.solentModeratorCompleted ? "✓ Signed Solent Moderator Franchise Partners" : "⭐ Signed Solent Moderator Franchise Partners ONLY") : "Solent Moderator (Not Applicable)"}
                     </td>
                     <td className="border border-gray-400 p-2">
                       <input
