@@ -3,6 +3,7 @@ import { HelpCircle, Download, CheckCircle, AlertCircle } from 'lucide-react';
 import { AssessmentData, StudentSample } from '../App';
 import { InternalModerationMLSentBack } from './InternalModerationMLSentBack';
 import { InternalModerationMLSignedOff } from './InternalModerationMLSignedOff';
+import { SolentModeratorFranchisePartnerSignOff } from './SolentModeratorFranchisePartnerSignOff';
 
 interface InternalModerationProps {
   onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
@@ -11,7 +12,7 @@ interface InternalModerationProps {
 }
 
 export function InternalModeration({ onNavigate, assessmentData, updateAssessmentData }: InternalModerationProps) {
-  const [currentView, setCurrentView] = useState<'moderator-view' | 'ml-sent-back' | 'ml-signed-off'>('moderator-view');
+  const [currentView, setCurrentView] = useState<'moderator-view' | 'franchise-partner-sign-off' | 'ml-sent-back' | 'ml-signed-off'>('moderator-view');
   
   const [formData, setFormData] = useState({
     moduleTitle: assessmentData.moduleTitle,
@@ -29,8 +30,8 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
     internalModeratorDate: '',
     moduleLeaderSignName: '',
     moduleLeaderSignDate: '',
-    franchiseModeratorName: '',
-    franchiseModeratorDate: '',
+    franchisePartnerName: assessmentData.franchisePartnerName || '',
+    franchisePartnerDate: assessmentData.franchisePartnerDate || '',
     isFranchisePartner: false,
     requiresExternalModeration: true
   });
@@ -41,7 +42,11 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
   const [moderationStatus, setModerationStatus] = useState<'draft' | 'sent-to-moderator' | 'sent-back' | 'moderator-approved' | 'sent-to-external'>('sent-to-moderator');
   const [moderatorComments, setModeratorComments] = useState('');
   
-  // If view is ML-specific, render those components AFTER all hooks
+  // If view is ML-specific or Franchise Partner-specific, render those components AFTER all hooks
+  if (currentView === 'franchise-partner-sign-off') {
+    return <SolentModeratorFranchisePartnerSignOff onNavigate={onNavigate} assessmentData={assessmentData} updateAssessmentData={updateAssessmentData} onViewChange={setCurrentView} />;
+  }
+  
   if (currentView === 'ml-sent-back') {
     return <InternalModerationMLSentBack onNavigate={onNavigate} assessmentData={assessmentData} updateAssessmentData={updateAssessmentData} onViewChange={setCurrentView} />;
   }
@@ -68,10 +73,21 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
       return;
     }
     
-    if (confirm('Are you sure you want to sign off this Internal Moderation? The Module Leader will be notified by email.')) {
-      alert('Internal Moderation has been signed off. The Module Leader has been notified by email.');
-      setModerationStatus('moderator-approved');
-      setCurrentView('ml-signed-off');
+    if (formData.isFranchisePartner && (!formData.franchisePartnerName || !formData.franchisePartnerDate)) {
+      alert('Please complete the Franchise Partner signature fields before signing off.');
+      return;
+    }
+    
+    if (confirm('Are you sure you want to sign off this Internal Moderation?' + (formData.isFranchisePartner ? ' This will route to the Solent Moderator Franchise Partner for final approval.' : ' The Module Leader will be notified by email.'))) {
+      if (formData.isFranchisePartner) {
+        alert('Internal Moderation has been signed off by the Internal Moderator. Routing to Solent Moderator Franchise Partner for final approval.');
+        setModerationStatus('moderator-approved');
+        setCurrentView('franchise-partner-sign-off');
+      } else {
+        alert('Internal Moderation has been signed off. The Module Leader will be notified by email.');
+        setModerationStatus('moderator-approved');
+        setCurrentView('ml-signed-off');
+      }
     }
   };
 
@@ -107,8 +123,8 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
       return;
     }
 
-    if (formData.isFranchisePartner && (!formData.franchiseModeratorName || !formData.franchiseModeratorDate)) {
-      alert('Please complete the Franchise Partner Moderator signature fields before sending to External Examiner.');
+    if (formData.isFranchisePartner && (!formData.franchisePartnerName || !formData.franchisePartnerDate)) {
+      alert('Please complete the Franchise Partner signature fields before sending to External Examiner.');
       return;
     }
     
@@ -384,7 +400,11 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
                 <input
                   type="checkbox"
                   checked={formData.isFranchisePartner}
-                  onChange={(e) => setFormData({ ...formData, isFranchisePartner: e.target.checked })}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setFormData({ ...formData, isFranchisePartner: checked });
+                    updateAssessmentData({ isFranchisePartner: checked });
+                  }}
                 />
                 <span className="text-sm">This module is for a Franchise Partner</span>
               </label>
@@ -548,8 +568,12 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
                     <td className="border border-gray-400 p-2">
                       <input
                         type="text"
-                        value={formData.franchiseModeratorName}
-                        onChange={(e) => setFormData({ ...formData, franchiseModeratorName: e.target.value })}
+                        value={formData.franchisePartnerName}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setFormData({ ...formData, franchisePartnerName: newValue });
+                          updateAssessmentData({ franchisePartnerName: newValue });
+                        }}
                         className="w-full p-2 border border-gray-300 bg-gray-100"
                         placeholder="Enter name"
                         disabled={!formData.isFranchisePartner || moderationStatus === 'sent-to-external'}
@@ -558,8 +582,12 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
                     <td className="border border-gray-400 p-2">
                       <input
                         type="date"
-                        value={formData.franchiseModeratorDate}
-                        onChange={(e) => setFormData({ ...formData, franchiseModeratorDate: e.target.value })}
+                        value={formData.franchisePartnerDate}
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setFormData({ ...formData, franchisePartnerDate: newValue });
+                          updateAssessmentData({ franchisePartnerDate: newValue });
+                        }}
                         className="w-full p-2 border border-gray-300 bg-gray-100"
                         disabled={!formData.isFranchisePartner || moderationStatus === 'sent-to-external'}
                       />
