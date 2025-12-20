@@ -168,12 +168,12 @@ export function SolentModeratorFranchisePartnerSignOff({
               <p className="text-gray-600">Module: {formData.moduleCode} - {formData.moduleTitle}</p>
               <p className="text-sm text-gray-500 mt-1">Academic Year: {formData.academicYear} | Semester: {formData.semester}</p>
             </div>
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 rounded">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="text-green-600" size={20} />
-                <span className="font-semibold text-green-800">Ready for External Examiner</span>
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+              <div className="flex items-center gap-2 text-yellow-800">
+                <CheckCircle className="text-yellow-600" size={20} />
+                <span className="font-semibold">Awaiting Solent Moderator decision</span>
               </div>
-              <p className="text-sm text-green-700 mt-1">Franchise Partner has approved this moderation</p>
+              <p className="text-sm text-yellow-700 mt-1">Review and either sign off or send back to the franchise partner module leader.</p>
             </div>
           </div>
 
@@ -267,12 +267,13 @@ export function SolentModeratorFranchisePartnerSignOff({
             </p>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Franchise Partner Moderator Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Solent Moderator Name</label>
                 <input
                   type="text"
                   value={formData.franchisePartnerName}
-                  disabled
-                  className="w-full p-2 border border-gray-300 bg-gray-100 rounded"
+                  onChange={(e) => setFormData({ ...formData, franchisePartnerName: e.target.value })}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  placeholder="Enter Solent Moderator name"
                 />
               </div>
               <div>
@@ -280,8 +281,8 @@ export function SolentModeratorFranchisePartnerSignOff({
                 <input
                   type="date"
                   value={formData.franchisePartnerDate}
-                  disabled
-                  className="w-full p-2 border border-gray-300 bg-gray-100 rounded"
+                  onChange={(e) => setFormData({ ...formData, franchisePartnerDate: e.target.value })}
+                  className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>
             </div>
@@ -294,9 +295,6 @@ export function SolentModeratorFranchisePartnerSignOff({
                 value={formData.solentModeratorComments}
                 onChange={(e) => setFormData({ ...formData, solentModeratorComments: e.target.value })}
               />
-            </div>
-            <div className="mt-4 p-3 bg-green-100 border border-green-300 rounded text-green-800 text-sm">
-              ✓ Signed and approved on {new Date(formData.franchisePartnerDate).toLocaleDateString()}
             </div>
           </section>
 
