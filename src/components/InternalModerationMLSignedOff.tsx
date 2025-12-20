@@ -25,7 +25,9 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
     internalModeratorDate: '2024-12-15',
     moduleLeaderSignName: 'Dr. Jane Smith',
     moduleLeaderSignDate: '2024-12-16',
-    isFranchisePartner: false,
+    franchisePartnerName: assessmentData.franchisePartnerName || '',
+    franchisePartnerDate: assessmentData.franchisePartnerDate || '',
+    isFranchisePartner: assessmentData.isFranchisePartner || false,
     requiresExternalModeration: true
   });
 
@@ -343,6 +345,27 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
                         type="text"
                         value={formData.moduleLeaderSignDate}
                         className="w-full p-2 border border-green-300 bg-green-50"
+                        readOnly
+                      />
+                    </td>
+                  </tr>
+                  <tr className={formData.isFranchisePartner ? "bg-yellow-100" : "bg-gray-50"}>
+                    <td className={`border border-gray-400 p-2 font-semibold ${formData.isFranchisePartner ? "text-yellow-900" : "text-gray-500"}`}>
+                      ⭐ Signed Solent Moderator Franchise Partners ONLY
+                    </td>
+                    <td className="border border-gray-400 p-2">
+                      <input
+                        type="text"
+                        value={formData.franchisePartnerName}
+                        className="w-full p-2 border border-gray-300 bg-gray-100"
+                        readOnly
+                      />
+                    </td>
+                    <td className="border border-gray-400 p-2">
+                      <input
+                        type="text"
+                        value={formData.franchisePartnerDate}
+                        className="w-full p-2 border border-gray-300 bg-gray-100"
                         readOnly
                       />
                     </td>
