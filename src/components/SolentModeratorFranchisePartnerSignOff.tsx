@@ -36,14 +36,23 @@ export function SolentModeratorFranchisePartnerSignOff({
   const studentSamples: StudentSample[] = assessmentData.studentSamples;
 
   const handleSignOffOk = () => {
-    if (confirm('Are you sure you want to sign off this moderation? This will send the form to the External Examiner and record your comments.')) {
+    if (!formData.franchisePartnerName) {
+      alert('Please select a Solent Moderator name.');
+      return;
+    }
+    if (!formData.franchisePartnerDate) {
+      alert('Please select a date.');
+      return;
+    }
+    if (confirm('Are you sure you want to sign off this moderation? Your name, date, and comments will be recorded and sent to the Module Leader for final approval.')) {
       updateAssessmentData({
-        internalModerationStatus: 'sent-to-external',
         solentModeratorComments: formData.solentModeratorComments,
+        franchisePartnerName: formData.franchisePartnerName,
+        franchisePartnerDate: formData.franchisePartnerDate,
         solentModeratorCompleted: true
       });
-      alert('Solent Moderator has signed off. The External Examiner has been notified by email.');
-      onNavigate('feedback');
+      alert('Solent Moderator sign-off complete. The Module Leader will now review and can send to the External Examiner.');
+      onViewChange?.('ml-signed-off');
     }
   };
 

@@ -356,9 +356,10 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
                       />
                     </td>
                   </tr>
-                  <tr className={formData.isFranchisePartner ? (formData.solentModeratorCompleted ? "bg-green-50" : "bg-yellow-100") : "bg-gray-50"}>
+                  {formData.isFranchisePartner && (
+                  <tr className={formData.solentModeratorCompleted ? "bg-green-50" : "bg-yellow-100"}>
                     <td className={`border border-gray-400 p-2 font-semibold ${formData.isFranchisePartner ? (formData.solentModeratorCompleted ? "text-green-900" : "text-yellow-900") : "text-gray-500"}`}>
-                      {formData.isFranchisePartner ? (formData.solentModeratorCompleted ? "✓ Signed Solent Moderator Franchise Partners" : "⭐ Signed Solent Moderator Franchise Partners ONLY") : "Solent Moderator (Not Applicable)"}
+                      {formData.solentModeratorCompleted ? "✓ Signed Solent Moderator Franchise Partners" : "⭐ Signed Solent Moderator Franchise Partners ONLY"}
                     </td>
                     <td className="border border-gray-400 p-2">
                       <input
@@ -377,6 +378,7 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
                       />
                     </td>
                   </tr>
+                  )}
                 </tbody>
               </table>
             </div>
