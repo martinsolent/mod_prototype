@@ -36,6 +36,12 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
   const studentSamples: StudentSample[] = assessmentData.studentSamples;
 
   const handleSendToExternalExaminer = () => {
+    // Check if Solent Moderator sign-off is required but not completed
+    if (formData.isFranchisePartner && !formData.solentModeratorCompleted) {
+      alert('Cannot send to External Examiner: Solent Moderator Franchise Partner sign-off is required but has not been completed. Please ensure the Solent Moderator completes their review and approval.');
+      return;
+    }
+    
     if (confirm('Are you sure you want to send this approved Internal Moderation to the External Examiner? They will be notified by email.')) {
       updateAssessmentData({
         internalModerationStatus: 'sent-to-external'
@@ -378,11 +384,23 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
 
           {/* Action Button */}
           <div className="border-t-2 border-gray-300 pt-6">
+            {formData.isFranchisePartner && !formData.solentModeratorCompleted && (
+              <div className="mb-4 p-4 bg-yellow-50 border border-yellow-300 rounded">
+                <p className="text-sm text-yellow-800">
+                  <strong>⚠️ Pending Solent Moderator Approval:</strong> This is a Franchise Partner module. The Solent Moderator must complete their compliance check and sign-off before you can send this to the External Examiner.
+                </p>
+              </div>
+            )}
             <div className="flex justify-center">
               <div className="text-center">
                 <button
                   onClick={handleSendToExternalExaminer}
-                  className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                  disabled={formData.isFranchisePartner && !formData.solentModeratorCompleted}
+                  className={`flex items-center gap-2 px-8 py-3 rounded transition-colors ${
+                    formData.isFranchisePartner && !formData.solentModeratorCompleted
+                      ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                      : 'bg-green-600 text-white hover:bg-green-700'
+                  }`}
                 >
                   <ArrowRight className="w-5 h-5" />
                   Send to External Examiner
