@@ -113,6 +113,53 @@ export function SolentModeratorFranchisePartnerSignOff({
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 py-8">
+        {/* View Toggle Buttons */}
+        <div className="mb-6 bg-white border border-gray-300 rounded p-4">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm mr-2">View:</span>
+            <button
+              onClick={() => onViewChange?.('moderator-view')}
+              className={`px-4 py-2 rounded transition-colors ${
+                'moderator-view' === 'franchise-partner-sign-off'
+                  ? 'bg-gray-200 text-gray-700'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Internal Moderator View
+            </button>
+            <button
+              onClick={() => onViewChange?.('ml-sent-back')}
+              className={`px-4 py-2 rounded transition-colors ${
+                'ml-sent-back' === 'franchise-partner-sign-off'
+                  ? 'bg-gray-200 text-gray-700'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              ML: Sent Back for Clarification
+            </button>
+            <button
+              onClick={() => onViewChange?.('franchise-partner-sign-off')}
+              className={`px-4 py-2 rounded transition-colors ${
+                true
+                  ? 'bg-orange-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              ⭐ Solent Moderator Franchise Partner Sign Off
+            </button>
+            <button
+              onClick={() => onViewChange?.('ml-signed-off')}
+              className={`px-4 py-2 rounded transition-colors ${
+                'ml-signed-off' === 'franchise-partner-sign-off'
+                  ? 'bg-gray-200 text-gray-700'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              ML: Signed Off
+            </button>
+          </div>
+        </div>
+
         <div className="bg-white rounded-lg shadow-md p-8">
           {/* Page Title and Status */}
           <div className="flex items-start justify-between mb-8">
