@@ -228,7 +228,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.moduleCode}
-                onChange={(e) => setFormData({ ...formData, moduleCode: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, moduleCode: newValue });
+                  updateAssessmentData({ moduleCode: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
               />
             </div>
@@ -238,7 +242,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <label className="text-left pt-2">Module Leader:</label>
               <select
                 value={formData.moduleLeader}
-                onChange={(e) => setFormData({ ...formData, moduleLeader: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, moduleLeader: newValue });
+                  updateAssessmentData({ moduleLeader: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
               >
                 {moduleLeaders.map((leader, index) => (
@@ -255,7 +263,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.level}
-                onChange={(e) => setFormData({ ...formData, level: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, level: newValue });
+                  updateAssessmentData({ level: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
               />
             </div>
@@ -266,7 +278,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.assessmentTitle}
-                onChange={(e) => setFormData({ ...formData, assessmentTitle: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, assessmentTitle: newValue });
+                  updateAssessmentData({ assessmentTitle: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
               />
             </div>
@@ -277,7 +293,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.assessmentNumber}
-                onChange={(e) => setFormData({ ...formData, assessmentNumber: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, assessmentNumber: newValue });
+                  updateAssessmentData({ assessmentNumber: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
               />
             </div>
@@ -288,7 +308,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.assessmentType}
-                onChange={(e) => setFormData({ ...formData, assessmentType: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, assessmentType: newValue });
+                  updateAssessmentData({ assessmentType: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 placeholder="e.g., Essay, Report, Presentation, etc."
               />
@@ -300,7 +324,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.mustPass}
-                onChange={(e) => setFormData({ ...formData, mustPass: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, mustPass: newValue });
+                  updateAssessmentData({ mustPass: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 placeholder="Y or N"
               />
@@ -312,7 +340,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.restrictions}
-                onChange={(e) => setFormData({ ...formData, restrictions: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, restrictions: newValue });
+                  updateAssessmentData({ restrictions: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 placeholder="e.g., 2000 words +/- 10%"
               />
@@ -329,7 +361,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
                       name="consequenceOption"
                       value="option1"
                       checked={formData.consequenceOption === 'option1'}
-                      onChange={(e) => setFormData({ ...formData, consequenceOption: e.target.value })}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        setFormData({ ...formData, consequenceOption: newValue });
+                        updateAssessmentData({ consequenceOption: newValue });
+                      }}
                       className="mt-1"
                     />
                     <span className="text-sm">
@@ -346,7 +382,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
                       name="consequenceOption"
                       value="option2"
                       checked={formData.consequenceOption === 'option2'}
-                      onChange={(e) => setFormData({ ...formData, consequenceOption: e.target.value })}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        setFormData({ ...formData, consequenceOption: newValue });
+                        updateAssessmentData({ consequenceOption: newValue });
+                      }}
                       className="mt-1"
                     />
                     <span className="text-sm">
@@ -364,7 +404,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.individualGroup}
-                onChange={(e) => setFormData({ ...formData, individualGroup: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, individualGroup: newValue });
+                  updateAssessmentData({ individualGroup: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 placeholder="Individual or Group"
               />
@@ -376,7 +420,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <div>
                 <textarea
                   value={formData.groupMarking}
-                  onChange={(e) => setFormData({ ...formData, groupMarking: e.target.value })}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    setFormData({ ...formData, groupMarking: newValue });
+                    updateAssessmentData({ groupMarking: newValue });
+                  }}
                   className="w-full h-24 p-3 border border-gray-300 bg-gray-100"
                   placeholder="Clearly state here how marks are identified for each student, do they all get the same mark or what evidence will be used to differentiate marks? You must not use the team discretion, marking must be based on evidence and linked to the learning outcomes."
                 />
@@ -392,7 +440,11 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
               <input
                 type="text"
                 value={formData.assessmentWeighting}
-                onChange={(e) => setFormData({ ...formData, assessmentWeighting: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, assessmentWeighting: newValue });
+                  updateAssessmentData({ assessmentWeighting: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 placeholder="e.g., 100%"
               />

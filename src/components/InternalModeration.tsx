@@ -14,12 +14,12 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
   const [currentView, setCurrentView] = useState<'moderator-view' | 'ml-sent-back' | 'ml-signed-off'>('moderator-view');
   
   const [formData, setFormData] = useState({
-    moduleTitle: 'COM416: External examiner feedback',
-    moduleCode: 'COM416',
-    moduleLeader: 'Dr. Jane Smith',
-    level: 'Level 6',
-    academicYear: '2025/26',
-    semester: 'Semester 1',
+    moduleTitle: assessmentData.moduleTitle,
+    moduleCode: assessmentData.moduleCode,
+    moduleLeader: assessmentData.moduleLeader,
+    level: assessmentData.level,
+    academicYear: assessmentData.academicYear,
+    semester: assessmentData.semester,
     numberOfSubmissions: '45',
     numberOfModeratedSubmissions: '5',
     gradesAppropriate: '',
@@ -35,14 +35,8 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
     requiresExternalModeration: true
   });
 
-  // Mock data for moderated sample - this would come from the Grade Report
-  const [studentSamples, setStudentSamples] = useState<StudentSample[]>([
-    { id: 'ST001234', firstName: 'Alice Johnson', grade: '74', workLink: '#' },
-    { id: 'ST001235', firstName: 'Bob Williams', grade: '65', workLink: '#' },
-    { id: 'ST001236', firstName: 'Charlie Brown', grade: '58', workLink: '#' },
-    { id: 'ST001237', firstName: 'Diana Martinez', grade: '48', workLink: '#' },
-    { id: 'ST001238', firstName: 'Ethan Davis', grade: '35', workLink: '#' }
-  ]);
+  // Use shared student samples from assessmentData (read-only for prototype)
+  const studentSamples: StudentSample[] = assessmentData.studentSamples;
 
   const [moderationStatus, setModerationStatus] = useState<'draft' | 'sent-to-moderator' | 'sent-back' | 'moderator-approved' | 'sent-to-external'>('sent-to-moderator');
   const [moderatorComments, setModeratorComments] = useState('');

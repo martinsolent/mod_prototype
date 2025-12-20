@@ -11,12 +11,12 @@ interface InternalModerationMLSignedOffProps {
 
 export function InternalModerationMLSignedOff({ onNavigate, assessmentData, updateAssessmentData, onViewChange }: InternalModerationMLSignedOffProps) {
   const [formData] = useState({
-    moduleTitle: 'COM416: External examiner feedback',
-    moduleCode: 'COM416',
-    moduleLeader: 'Dr. Jane Smith',
-    level: 'Level 6',
-    academicYear: '2025/26',
-    semester: 'Semester 1',
+    moduleTitle: assessmentData.moduleTitle,
+    moduleCode: assessmentData.moduleCode,
+    moduleLeader: assessmentData.moduleLeader,
+    level: assessmentData.level,
+    academicYear: assessmentData.academicYear,
+    semester: assessmentData.semester,
     numberOfSubmissions: '45',
     numberOfModeratedSubmissions: '5',
     gradesAppropriate: 'The grades are appropriate and consistent with the learning outcomes. Feedback provided is clear, constructive, and supports student learning. The marking is fair and equitable across all submissions.',
@@ -29,14 +29,8 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
     requiresExternalModeration: true
   });
 
-  // Mock data for moderated sample
-  const [studentSamples] = useState<StudentSample[]>([
-    { id: 'ST001234', firstName: 'Alice Johnson', grade: '74', workLink: '#' },
-    { id: 'ST001235', firstName: 'Bob Williams', grade: '65', workLink: '#' },
-    { id: 'ST001236', firstName: 'Charlie Brown', grade: '58', workLink: '#' },
-    { id: 'ST001237', firstName: 'Diana Martinez', grade: '48', workLink: '#' },
-    { id: 'ST001238', firstName: 'Ethan Davis', grade: '35', workLink: '#' }
-  ]);
+  // Use shared student samples from assessmentData (read-only for prototype)
+  const studentSamples: StudentSample[] = assessmentData.studentSamples;
 
   const handleSendToExternalExaminer = () => {
     if (confirm('Are you sure you want to send this approved Internal Moderation to the External Examiner? They will be notified by email.')) {

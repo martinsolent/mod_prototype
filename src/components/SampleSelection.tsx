@@ -10,12 +10,6 @@ interface SampleSelectionProps {
 
 export function SampleSelection({ onNavigate, assessmentData, updateAssessmentData }: SampleSelectionProps) {
   const [formData, setFormData] = useState({
-    moduleTitle: 'COM416: External examiner feedback',
-    moduleCode: 'COM416',
-    moduleLeader: 'Dr. Jane Smith',
-    level: 'Level 6',
-    academicYear: '2025/26',
-    semester: 'Semester 1',
     numberOfSubmissions: '45',
     numberOfModeratedSubmissions: '5',
     gradesAppropriate: '',
@@ -25,14 +19,8 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
     selectedModerator: assessmentData.internalModeratorName || ''
   });
 
-  // Mock data for moderated sample - this would come from the Grade Report
-  const [studentSamples, setStudentSamples] = useState<StudentSample[]>([
-    { id: 'ST001234', firstName: 'Alice Johnson', grade: '74', workLink: '#' },
-    { id: 'ST001235', firstName: 'Bob Williams', grade: '65', workLink: '#' },
-    { id: 'ST001236', firstName: 'Charlie Brown', grade: '58', workLink: '#' },
-    { id: 'ST001237', firstName: 'Diana Martinez', grade: '48', workLink: '#' },
-    { id: 'ST001238', firstName: 'Ethan Davis', grade: '35', workLink: '#' }
-  ]);
+  // Use shared student samples from assessmentData (read-only for prototype)
+  const studentSamples: StudentSample[] = assessmentData.studentSamples;
 
   // Moderator dropdown options
   const moderators = [
@@ -144,8 +132,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <label className="text-right pt-2">Module Title:</label>
               <input
                 type="text"
-                value={formData.moduleTitle}
-                onChange={(e) => setFormData({ ...formData, moduleTitle: e.target.value })}
+                value={assessmentData.moduleTitle}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -155,8 +142,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <label className="text-right pt-2">Module Code:</label>
               <input
                 type="text"
-                value={formData.moduleCode}
-                onChange={(e) => setFormData({ ...formData, moduleCode: e.target.value })}
+                value={assessmentData.moduleCode}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -166,8 +152,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <label className="text-right pt-2">Module Leader:</label>
               <input
                 type="text"
-                value={formData.moduleLeader}
-                onChange={(e) => setFormData({ ...formData, moduleLeader: e.target.value })}
+                value={assessmentData.moduleLeader}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -177,8 +162,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <label className="text-right pt-2">Level:</label>
               <input
                 type="text"
-                value={formData.level}
-                onChange={(e) => setFormData({ ...formData, level: e.target.value })}
+                value={assessmentData.level}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -188,8 +172,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <label className="text-right pt-2">Academic Year:</label>
               <input
                 type="text"
-                value={formData.academicYear}
-                onChange={(e) => setFormData({ ...formData, academicYear: e.target.value })}
+                value={assessmentData.academicYear}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
@@ -199,8 +182,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
               <label className="text-right pt-2">Semester:</label>
               <input
                 type="text"
-                value={formData.semester}
-                onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
+                value={assessmentData.semester}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
                 readOnly
               />
