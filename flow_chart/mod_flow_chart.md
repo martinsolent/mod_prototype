@@ -20,11 +20,11 @@ flowchart TD
     PR4 --> EndA([End Pre-assessment<br/>Approved & Published])
     
     classDef start fill:#90EE90
-    classDef end fill:#FFB6C1
+    classDef endNode fill:#FFB6C1
     classDef brief fill:#E6F3FF
     classDef peer fill:#F0E6FF
     class StartA start
-    class EndA end
+    class EndA endNode
     class AB,AB1,AB2,AB3,AB4,AB5 brief
     class PR,PR1,PR2,PR3,PR4 peer
 ```
@@ -70,13 +70,13 @@ flowchart TD
     EE2 --> EndB
     
     classDef start fill:#90EE90
-    classDef end fill:#FFB6C1
+    classDef endNode fill:#FFB6C1
     classDef sample fill:#FFF9E6
     classDef mod fill:#FFE6F0
     classDef external fill:#F0E6FF
     classDef warn fill:#FFE6E6
     class StartB start
-    class EndB end
+    class EndB endNode
     class SS,SS1,SS2,SS3,SS4 sample
     class IM,IM1,IM2,IM3,IM4,IM5,IM6,IM7,IMFP mod
     class EE,EE1,EE2 external
