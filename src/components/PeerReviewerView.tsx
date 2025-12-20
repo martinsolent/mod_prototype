@@ -404,11 +404,10 @@ export function PeerReviewerView({ onNavigate, assessmentData, updateAssessmentD
             <div className="flex items-center gap-2">
               <label>Date:</label>
               <input
-                type="text"
+                type="date"
                 value={formData.peerReviewerDate}
                 onChange={(e) => setFormData({ ...formData, peerReviewerDate: e.target.value })}
                 className="border border-gray-300 px-3 py-1 bg-gray-200 w-40"
-                placeholder="DD/MM/YYYY"
               />
             </div>
           </div>

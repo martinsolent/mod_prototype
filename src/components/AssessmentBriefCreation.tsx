@@ -454,11 +454,14 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
             <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
               <label className="text-left pt-2">Issue Date:</label>
               <input
-                type="text"
+                type="date"
                 value={formData.issueDate}
-                onChange={(e) => setFormData({ ...formData, issueDate: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, issueDate: newValue });
+                  updateAssessmentData({ issueDate: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
-                placeholder="e.g., Monday 1st January 2026"
               />
             </div>
 
@@ -466,11 +469,14 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
             <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
               <label className="text-left pt-2">Hand In Date:</label>
               <input
-                type="text"
+                type="date"
                 value={formData.handInDate}
-                onChange={(e) => setFormData({ ...formData, handInDate: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, handInDate: newValue });
+                  updateAssessmentData({ handInDate: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
-                placeholder="e.g., Friday 15th March 2026, 4:00pm"
               />
             </div>
 
@@ -478,11 +484,14 @@ export function AssessmentBriefCreation({ onNavigate, assessmentData, updateAsse
             <div className="grid grid-cols-[300px_1fr] gap-4 items-start">
               <label className="text-left pt-2">Planned Feedback Date:</label>
               <input
-                type="text"
+                type="date"
                 value={formData.plannedFeedbackDate}
-                onChange={(e) => setFormData({ ...formData, plannedFeedbackDate: e.target.value })}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setFormData({ ...formData, plannedFeedbackDate: newValue });
+                  updateAssessmentData({ plannedFeedbackDate: newValue });
+                }}
                 className="border border-gray-300 px-3 py-2 bg-gray-100"
-                placeholder="e.g., Within 20 working days"
               />
             </div>
 
