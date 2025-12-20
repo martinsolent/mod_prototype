@@ -6,7 +6,7 @@ interface InternalModerationMLSentBackProps {
   onNavigate: (page: 'brief-creation' | 'peer-review' | 'sample-selection' | 'internal-moderation' | 'feedback') => void;
   assessmentData: AssessmentData;
   updateAssessmentData: (updates: Partial<AssessmentData>) => void;
-  onViewChange?: (view: 'moderator-view' | 'ml-sent-back' | 'ml-signed-off') => void;
+  onViewChange?: (view: 'moderator-view' | 'franchise-partner-sign-off' | 'ml-sent-back' | 'ml-signed-off') => void;
 }
 
 export function InternalModerationMLSentBack({ onNavigate, assessmentData, updateAssessmentData, onViewChange }: InternalModerationMLSentBackProps) {
@@ -122,6 +122,12 @@ export function InternalModerationMLSentBack({ onNavigate, assessmentData, updat
               className="px-4 py-2 rounded transition-colors bg-yellow-600 text-white"
             >
               ML: Sent Back for Clarification
+            </button>
+            <button
+              onClick={() => onViewChange?.('franchise-partner-sign-off')}
+              className="px-4 py-2 rounded transition-colors bg-orange-600 text-white"
+            >
+              ⭐ Solent Moderator Franchise Partner Sign Off
             </button>
             <button
               onClick={() => onViewChange?.('ml-signed-off')}

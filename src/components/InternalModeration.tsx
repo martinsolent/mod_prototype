@@ -424,7 +424,7 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
               <div className="grid grid-cols-[250px_1fr] gap-4 items-start bg-yellow-50 p-4 rounded border-l-4 border-yellow-400 mb-4">
                 <div></div>
                 <div className="text-sm text-yellow-800">
-                  <strong>⭐ Franchise Partner Module Selected:</strong> When you sign off below, this moderation will route to the <strong>Solent Moderator Franchise Partner Sign Off view</strong> for final approval before sending to External Examiner.
+                  <strong>⭐ Franchise Partner Module Selected:</strong> After Internal Moderator sign-off, the workflow routes to the <strong>Solent Moderator Final Compliance Moderation</strong> view. The Solent Moderator performs a final moderation check on the franchise partner’s grading and moderation process to ensure compliance.
                 </div>
               </div>
             )}

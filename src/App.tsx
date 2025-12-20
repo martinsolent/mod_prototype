@@ -48,6 +48,8 @@ export interface AssessmentData {
   // Peer Review Fields
   passGrade: string;
   aggregated: string;
+  // Solent Moderator final compliance comments
+  solentModeratorComments: string;
   moduleLeaderComments: string;
   moduleLeaderSignature: string;
   peerReviewDate: string;
@@ -199,7 +201,8 @@ export default function App() {
     externalExaminerCompleted: false,
     externalExaminerSignature: '',
     externalExaminerDate: '',
-    externalExaminerSubmitted: false
+    externalExaminerSubmitted: false,
+    solentModeratorComments: '',
   });
 
   // Update function that can be used by all components

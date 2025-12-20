@@ -15,7 +15,7 @@ export function SolentModeratorFranchisePartnerSignOff({
   updateAssessmentData, 
   onViewChange 
 }: SolentModeratorFranchisePartnerSignOffProps) {
-  const [formData] = useState({
+  const [formData, setFormData] = useState({
     moduleTitle: assessmentData.moduleTitle,
     moduleCode: assessmentData.moduleCode,
     moduleLeader: assessmentData.moduleLeader,
@@ -26,6 +26,7 @@ export function SolentModeratorFranchisePartnerSignOff({
     numberOfModeratedSubmissions: '5',
     gradesAppropriate: 'The grades are appropriate and consistent with the learning outcomes. Feedback provided is clear, constructive, and supports student learning. The marking is fair and equitable across all submissions.',
     moderatorComments: 'All samples reviewed are of good quality. The marking is consistent and feedback is appropriate. No further action required.',
+    solentModeratorComments: assessmentData.solentModeratorComments || '',
     franchisePartnerName: assessmentData.franchisePartnerName || 'Franchise Partner Moderator',
     franchisePartnerDate: assessmentData.franchisePartnerDate || new Date().toISOString().split('T')[0],
     requiresExternalModeration: true
@@ -34,20 +35,22 @@ export function SolentModeratorFranchisePartnerSignOff({
   // Use shared student samples from assessmentData (read-only for prototype)
   const studentSamples: StudentSample[] = assessmentData.studentSamples;
 
-  const handleSendToExternalExaminer = () => {
-    if (confirm('Are you sure you want to send this Franchise Partner approved Internal Moderation to the External Examiner? They will be notified by email.')) {
+  const handleSignOffOk = () => {
+    if (confirm('Are you sure you want to sign off this moderation? This will send the form to the External Examiner and record your comments.')) {
       updateAssessmentData({
-        internalModerationStatus: 'sent-to-external'
+        internalModerationStatus: 'sent-to-external',
+        solentModeratorComments: formData.solentModeratorComments
       });
-      alert('Internal Moderation (Franchise Partner Sign Off) has been sent to the External Examiner. They have been notified by email.');
+      alert('Solent Moderator has signed off. The External Examiner has been notified by email.');
       onNavigate('feedback');
     }
   };
 
-  const handleSendBackToModerator = () => {
-    if (confirm('Are you sure you want to send this back to the Internal Moderator for further review? They will be notified by email.')) {
-      alert('Internal Moderation has been sent back to the Internal Moderator for further review.');
-      onViewChange?.('moderator-view');
+  const handleSendBackToFranchiseML = () => {
+    if (confirm('Are you sure you want to send this back to the Franchise Partner Module Leader for clarification? They will be notified by email.')) {
+      updateAssessmentData({ solentModeratorComments: formData.solentModeratorComments });
+      alert('The form has been sent back to the Franchise Partner Module Leader for clarification.');
+      onViewChange?.('ml-sent-back');
     }
   };
 
@@ -211,9 +214,9 @@ export function SolentModeratorFranchisePartnerSignOff({
 
           {/* Franchise Partner Sign Off Section */}
           <section className="mb-8 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Solent Moderator Franchise Partner Sign Off</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Solent Moderator Final Compliance Moderation</h3>
             <p className="text-sm text-gray-600 mb-4">
-              This section confirms that the Solent Moderator (acting on behalf of the Franchise Partner) has reviewed and approved the internal moderation.
+              The Solent Moderator performs a final moderation check on the franchise partner’s grading and moderation process to ensure compliance.
             </p>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -235,6 +238,16 @@ export function SolentModeratorFranchisePartnerSignOff({
                 />
               </div>
             </div>
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Solent Moderator Comments</label>
+              <textarea
+                className="w-full p-2 border border-gray-300 rounded"
+                rows={4}
+                placeholder="Add compliance/moderation comments..."
+                value={formData.solentModeratorComments}
+                onChange={(e) => setFormData({ ...formData, solentModeratorComments: e.target.value })}
+              />
+            </div>
             <div className="mt-4 p-3 bg-green-100 border border-green-300 rounded text-green-800 text-sm">
               ✓ Signed and approved on {new Date(formData.franchisePartnerDate).toLocaleDateString()}
             </div>
@@ -244,17 +257,17 @@ export function SolentModeratorFranchisePartnerSignOff({
           <section className="flex gap-4 justify-between">
             <div className="flex gap-2">
               <button
-                onClick={handleSendBackToModerator}
+                onClick={handleSendBackToFranchiseML}
                 className="px-6 py-2 border border-orange-300 text-orange-700 rounded hover:bg-orange-50 font-medium"
               >
-                Send Back to Internal Moderator
+                Send Back to Franchise Partner Module Leader
               </button>
             </div>
             <button
-              onClick={handleSendToExternalExaminer}
+              onClick={handleSignOffOk}
               className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium flex items-center gap-2"
             >
-              Send to External Examiner
+              Sign Off – Everything is OK
               <ArrowRight size={18} />
             </button>
           </section>
