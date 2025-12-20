@@ -268,13 +268,17 @@ export function SolentModeratorFranchisePartnerSignOff({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Solent Moderator Name</label>
-                <input
-                  type="text"
+                <select
                   value={formData.franchisePartnerName}
                   onChange={(e) => setFormData({ ...formData, franchisePartnerName: e.target.value })}
-                  className="w-full p-2 border border-gray-300 rounded"
-                  placeholder="Enter Solent Moderator name"
-                />
+                  className="w-full p-2 border border-gray-300 rounded bg-white"
+                >
+                  <option value="">Select Solent Moderator</option>
+                  <option value="Dr. Sarah Johnson">Dr. Sarah Johnson</option>
+                  <option value="Dr. Jane Smith">Dr. Jane Smith</option>
+                  <option value="Dr. Alex Turner">Dr. Alex Turner</option>
+                  <option value="Dr. Priya Patel">Dr. Priya Patel</option>
+                </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
