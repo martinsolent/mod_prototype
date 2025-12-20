@@ -410,6 +410,15 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
               </label>
             </div>
 
+            {formData.isFranchisePartner && (
+              <div className="grid grid-cols-[250px_1fr] gap-4 items-start bg-yellow-50 p-4 rounded border-l-4 border-yellow-400 mb-4">
+                <div></div>
+                <div className="text-sm text-yellow-800">
+                  <strong>⭐ Franchise Partner Module Selected:</strong> When you sign off below, this moderation will route to the <strong>Solent Moderator Franchise Partner Sign Off view</strong> for final approval before sending to External Examiner.
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-[250px_1fr] gap-4 items-start">
               <label className="text-right pt-2">External Moderation Required:</label>
               <label className="flex items-center gap-2">
@@ -563,8 +572,10 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
                       />
                     </td>
                   </tr>
-                  <tr>
-                    <td className="border border-gray-400 p-2">Signed Solent Moderator Franchise Partners ONLY</td>
+                  <tr className={formData.isFranchisePartner ? "bg-yellow-100" : "bg-gray-50"}>
+                    <td className={`border border-gray-400 p-2 font-semibold ${formData.isFranchisePartner ? "text-yellow-900" : "text-gray-500"}`}>
+                      ⭐ Signed Solent Moderator Franchise Partners ONLY
+                    </td>
                     <td className="border border-gray-400 p-2">
                       <input
                         type="text"
