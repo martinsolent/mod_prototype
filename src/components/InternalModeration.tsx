@@ -225,6 +225,16 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
             >
               ML: Sent Back for Clarification
             </button>
+              <button
+                onClick={() => setCurrentView('franchise-partner-sign-off')}
+                className={`px-4 py-2 rounded transition-colors ${
+                  currentView === 'franchise-partner-sign-off'
+                    ? 'bg-orange-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                ⭐ Solent Moderator Franchise Partner Sign Off
+              </button>
             <button
               onClick={() => setCurrentView('ml-signed-off')}
               className={`px-4 py-2 rounded transition-colors ${
