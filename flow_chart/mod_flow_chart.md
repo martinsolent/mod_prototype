@@ -6,7 +6,7 @@ flowchart TD
     AB --> AB1[Module Leader creates<br/>assessment brief]
     AB1 --> AB2[Fill module info,<br/>assessment details,<br/>learning outcomes]
     AB2 --> AB3[Assign Internal<br/>Peer Reviewer]
-    AB3 --> AB4{Is assessment brief complete?}
+    AB3 --> AB4{Is assessment brief<br/>complete?}
     AB4 -->|No| AB1
     AB4 -->|Yes| AB5[Submit assessment brief<br/>for Peer Review]
     AB5 --> PR[Peer Review Process]
@@ -49,10 +49,10 @@ flowchart TD
     IM2 -->|No| IM5[Internal Moderator signs]
     IM5 --> IM6[Module Leader countersigns<br/>acknowledgement]
     IM6 --> IM7{Is this a Franchise<br/>Partner module?}
-    IM7 -->|No| IM8{External moderation required?}
+    IM7 -->|No| IM8{External moderation<br/>required?}
     IM7 -->|Yes| IMFP[Solent Moderator<br/>Franchise Partner Sign Off<br/>compliance check]
     IMFP -->|Send back| IM3
-    IMFP -->|Approve| IM8{External moderation required?}
+    IMFP -->|Approve| IM8{External moderation<br/>required?}
     
     IM8 -->|No| EndB([End Post-assessment<br/>Process Complete])
     IM8 -->|Yes| EE[External Examiner Review]
