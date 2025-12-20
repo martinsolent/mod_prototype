@@ -36,9 +36,7 @@ flowchart TD
     
     SS --> SS1[Course Leader selects
     samples after grading]
-    SS1 --> SS2[Ensure representative set:
-    10% coverage, min 5, max 15,
-    include borderline]
+    SS1 --> SS2[10% coverage or 5–15 samples<br/>Stratified selection:<br/>bottom, middle, top performers]
     SS2 --> SS3{Samples selected?}
     SS3 -->|No| SS1
     SS3 -->|Yes| SS4[Send to Internal Moderator
