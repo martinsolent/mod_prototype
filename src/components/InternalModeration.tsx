@@ -138,6 +138,20 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
     }
   };
 
+  const handleCompleteNoExternal = () => {
+    if (!formData.moduleLeaderSignName || !formData.moduleLeaderSignDate) {
+      alert('Please complete the Module Leader signature fields before completing the process.');
+      return;
+    }
+    // If franchise partner is selected, ensure their signature is present
+    if (formData.isFranchisePartner && (!formData.franchisePartnerName || !formData.franchisePartnerDate)) {
+      alert('Please complete the Solent Moderator (Franchise Partner) signature fields before completing the process.');
+      return;
+    }
+    alert('Internal Moderation process completed. External moderation is not required for this module.');
+    updateAssessmentData({ internalModerationComplete: true });
+  };
+
   const handleDownloadPDF = () => {
     alert('Downloading Internal Moderation form as PDF...\n\nIn a production environment, this would generate and download a PDF of the moderation form.');
   };
@@ -690,19 +704,30 @@ export function InternalModeration({ onNavigate, assessmentData, updateAssessmen
               {/* Module Leader: Send to External Examiner */}
               {moderationStatus === 'moderator-approved' && (
                 <div className="text-center">
-                  <button
-                    onClick={handleSendToExternalExaminer}
-                    className="px-8 py-3 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
-                  >
-                    Send to External Examiner
-                  </button>
-                  <p className="text-sm text-gray-600 mt-2">
-                    Send this approved moderation to the External Examiner for review.
-                  </p>
-                  {!formData.requiresExternalModeration && (
-                    <p className="text-sm text-yellow-700 mt-2">
-                      ⚠️ Note: Normal undergraduate first year modules do not typically require external moderation.
-                    </p>
+                  {formData.requiresExternalModeration ? (
+                    <>
+                      <button
+                        onClick={handleSendToExternalExaminer}
+                        className="px-8 py-3 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+                      >
+                        Send to External Examiner
+                      </button>
+                      <p className="text-sm text-gray-600 mt-2">
+                        Send this approved moderation to the External Examiner for review.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={handleCompleteNoExternal}
+                        className="px-8 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                      >
+                        Complete Process (No External Moderation)
+                      </button>
+                      <p className="text-sm text-yellow-700 mt-2">
+                        External moderation is not required. Complete the process once sign-offs are in place.
+                      </p>
+                    </>
                   )}
                 </div>
               )}

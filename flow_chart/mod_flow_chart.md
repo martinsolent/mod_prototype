@@ -49,10 +49,10 @@ flowchart TD
     IM2 -->|No| IM5[Internal Moderator signs]
     IM5 --> IM6[Module Leader countersigns<br/>acknowledgement]
     IM6 --> IM7{Is this a Franchise<br/>Partner module?}
-    IM7 -->|No| IM8{External moderation<br/>required?}
+    IM7 -->|No| IM8{External<br/>moderation<br/>required?}
     IM7 -->|Yes| IMFP[Solent Moderator<br/>Franchise Partner Sign Off<br/>compliance check]
     IMFP -->|Send back| IM3
-    IMFP -->|Approve| IM8{External moderation<br/>required?}
+    IMFP -->|Approve| IM8{External<br/>moderation<br/>required?}
     
     IM8 -->|No| EndB([End Post-assessment<br/>Process Complete])
     IM8 -->|Yes| EE[External Examiner Review]

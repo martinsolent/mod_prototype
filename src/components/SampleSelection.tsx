@@ -22,6 +22,11 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
   // Use shared student samples from assessmentData (read-only for prototype)
   const studentSamples: StudentSample[] = assessmentData.studentSamples;
 
+  // Recommended sample size: 10% of submissions, min 5, max 15
+  const totalSubmissions = parseInt(formData.numberOfSubmissions || '0', 10) || 0;
+  const recommendedSampleCount = Math.min(15, Math.max(5, Math.round(totalSubmissions * 0.1)));
+  const currentSampleCount = studentSamples.length;
+
   // Moderator dropdown options
   const moderators = [
     'Select a moderator...',
@@ -214,7 +219,12 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
                 <input
                   type="checkbox"
                   checked={formData.isFranchisePartner}
-                  onChange={(e) => setFormData({ ...formData, isFranchisePartner: e.target.checked })}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setFormData({ ...formData, isFranchisePartner: checked });
+                    // Persist to shared state so Internal Moderation routes correctly
+                    updateAssessmentData({ isFranchisePartner: checked });
+                  }}
                 />
                 <span className="text-sm">This module is for a Franchise Partner</span>
               </label>
@@ -257,6 +267,17 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
                 <strong>Note:</strong> Internal moderation samples must be properly representative and include borderline cases between each grade band. 
                 The sample size must represent 10% of submissions which should not be more than 15 or less than 5 (or all assignments if less than 5) assignments for large or small modules.
               </p>
+              <p className="text-sm mt-2">
+                <strong>Recommendation:</strong> For {totalSubmissions || '0'} submissions, select <strong>{recommendedSampleCount}</strong> samples.
+                Currently selected: <strong>{currentSampleCount}</strong>.
+              </p>
+              {currentSampleCount !== recommendedSampleCount && (
+                <div className="mt-2 p-2 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+                  <p className="text-sm text-yellow-800">
+                    Consider adjusting the sample count to match the recommendation (10% with bounds 5–15) and ensure stratified coverage across bottom, middle, and top performers.
+                  </p>
+                </div>
+              )}
             </div>
             
             <div className="overflow-x-auto">

@@ -13,15 +13,15 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
   const [currentView, setCurrentView] = useState<'external-examiner' | 'course-leader'>('external-examiner');
   const [assessmentExpanded, setAssessmentExpanded] = useState(true);
   const [feedbackExpanded, setFeedbackExpanded] = useState(true);
-  const [comments, setComments] = useState('');
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [question1, setQuestion1] = useState('');
-  const [question2, setQuestion2] = useState('');
-  const [question3, setQuestion3] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [comments, setComments] = useState(assessmentData.externalExaminerComments || '');
+  const [isCompleted, setIsCompleted] = useState(assessmentData.externalExaminerCompleted || false);
+  const [question1, setQuestion1] = useState(assessmentData.externalExaminerQuestion1 || '');
+  const [question2, setQuestion2] = useState(assessmentData.externalExaminerQuestion2 || '');
+  const [question3, setQuestion3] = useState(assessmentData.externalExaminerQuestion3 || '');
+  const [isSubmitted, setIsSubmitted] = useState(assessmentData.externalExaminerSubmitted || false);
 
-  const [externalExaminerSignature, setExternalExaminerSignature] = useState('');
-  const [externalExaminerDate, setExternalExaminerDate] = useState('');
+  const [externalExaminerSignature, setExternalExaminerSignature] = useState(assessmentData.externalExaminerSignature || '');
+  const [externalExaminerDate, setExternalExaminerDate] = useState(assessmentData.externalExaminerDate || '');
 
   // If view is course-leader, render that component
   if (currentView === 'course-leader') {
@@ -42,6 +42,17 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
     if (confirm('Are you sure you want to submit this External Examiner report? The Module Leader will be notified by email that the assessment process is complete.')) {
       alert('External Examiner report has been submitted successfully.\n\nThe Module Leader has been notified by email that the external examination process is complete.');
       setIsSubmitted(true);
+      updateAssessmentData({
+        externalExaminerSignature,
+        externalExaminerDate,
+        externalExaminerComments: comments,
+        externalExaminerQuestion1: question1,
+        externalExaminerQuestion2: question2,
+        externalExaminerQuestion3: question3,
+        externalExaminerCompleted: isCompleted,
+        externalExaminerSubmitted: true
+      });
+      setCurrentView('course-leader');
     }
   };
 
@@ -385,7 +396,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       name="question1"
                       value="yes"
                       checked={question1 === 'yes'}
-                      onChange={(e) => setQuestion1(e.target.value)}
+                      onChange={(e) => {
+                        setQuestion1(e.target.value);
+                        updateAssessmentData({ externalExaminerQuestion1: e.target.value });
+                      }}
                       className="w-4 h-4"
                       disabled={isSubmitted}
                     />
@@ -397,7 +411,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       name="question1"
                       value="no"
                       checked={question1 === 'no'}
-                      onChange={(e) => setQuestion1(e.target.value)}
+                      onChange={(e) => {
+                        setQuestion1(e.target.value);
+                        updateAssessmentData({ externalExaminerQuestion1: e.target.value });
+                      }}
                       className="w-4 h-4"
                       disabled={isSubmitted}
                     />
@@ -418,7 +435,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       name="question2"
                       value="yes"
                       checked={question2 === 'yes'}
-                      onChange={(e) => setQuestion2(e.target.value)}
+                      onChange={(e) => {
+                        setQuestion2(e.target.value);
+                        updateAssessmentData({ externalExaminerQuestion2: e.target.value });
+                      }}
                       className="w-4 h-4"
                       disabled={isSubmitted}
                     />
@@ -430,7 +450,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       name="question2"
                       value="no"
                       checked={question2 === 'no'}
-                      onChange={(e) => setQuestion2(e.target.value)}
+                      onChange={(e) => {
+                        setQuestion2(e.target.value);
+                        updateAssessmentData({ externalExaminerQuestion2: e.target.value });
+                      }}
                       className="w-4 h-4"
                       disabled={isSubmitted}
                     />
@@ -451,7 +474,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       name="question3"
                       value="yes"
                       checked={question3 === 'yes'}
-                      onChange={(e) => setQuestion3(e.target.value)}
+                      onChange={(e) => {
+                        setQuestion3(e.target.value);
+                        updateAssessmentData({ externalExaminerQuestion3: e.target.value });
+                      }}
                       className="w-4 h-4"
                       disabled={isSubmitted}
                     />
@@ -463,7 +489,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                       name="question3"
                       value="no"
                       checked={question3 === 'no'}
-                      onChange={(e) => setQuestion3(e.target.value)}
+                      onChange={(e) => {
+                        setQuestion3(e.target.value);
+                        updateAssessmentData({ externalExaminerQuestion3: e.target.value });
+                      }}
                       className="w-4 h-4"
                       disabled={isSubmitted}
                     />
@@ -498,8 +527,11 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                 <textarea
                   id="comments"
                   value={comments}
-                  onChange={(e) => setComments(e.target.value)}
-                  className="w-full h-80 p-3 border border-gray-300 rounded bg-[#e8edf1] focus:outline-none focus:ring-2 focus:ring-[#0066cc] focus:border-transparent"
+                  onChange={(e) => {
+                    setComments(e.target.value);
+                    updateAssessmentData({ externalExaminerComments: e.target.value });
+                  }}
+                  className="w-full h-80 p-3 border border-gray-300 rounded bg-[#e8edf1] focus:outline-none focus:ring-2 focus:ring[#0066cc] focus:border-transparent"
                   disabled={isSubmitted}
                 />
               </div>
@@ -509,7 +541,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                   type="checkbox"
                   id="completed"
                   checked={isCompleted}
-                  onChange={(e) => setIsCompleted(e.target.checked)}
+                  onChange={(e) => {
+                    setIsCompleted(e.target.checked);
+                    updateAssessmentData({ externalExaminerCompleted: e.target.checked });
+                  }}
                   className="w-4 h-4"
                   disabled={isSubmitted}
                 />
@@ -542,7 +577,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                     <input
                       type="text"
                       value={externalExaminerSignature}
-                      onChange={(e) => setExternalExaminerSignature(e.target.value)}
+                      onChange={(e) => {
+                        setExternalExaminerSignature(e.target.value);
+                        updateAssessmentData({ externalExaminerSignature: e.target.value });
+                      }}
                       className="w-full p-2 border border-gray-300 bg-gray-100"
                       placeholder="Enter your name"
                       disabled={isSubmitted}
@@ -552,7 +590,10 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
                     <input
                       type="date"
                       value={externalExaminerDate}
-                      onChange={(e) => setExternalExaminerDate(e.target.value)}
+                      onChange={(e) => {
+                        setExternalExaminerDate(e.target.value);
+                        updateAssessmentData({ externalExaminerDate: e.target.value });
+                      }}
                       className="w-full p-2 border border-gray-300 bg-gray-100"
                       disabled={isSubmitted}
                     />
