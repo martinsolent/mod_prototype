@@ -1,82 +1,86 @@
 ```mermaid
 flowchart TD
-    Start([Start]) --> AB[Assessment Brief Creation]
+    %% Workflow A: Pre-assessment (before semester)
+    StartA([Start: Pre-assessment]) --> AB[Assessment Brief Creation]
     
     AB --> AB1[Module Leader creates<br/>assessment brief]
-    AB1 --> AB2[Fill in module information,<br/>assessment details,<br/>learning outcomes]
+    AB1 --> AB2[Fill module info,<br/>assessment details,<br/>learning outcomes]
     AB2 --> AB3[Assign Internal<br/>Peer Reviewer]
-    AB3 --> AB4{Brief<br/>Complete?}
+    AB3 --> AB4{Brief complete?}
     AB4 -->|No| AB1
-    AB4 -->|Yes| AB5[Submit for<br/>Peer Review]
-    AB5 --> PR[Peer Review Page]
+    AB4 -->|Yes| AB5[Submit for Peer Review]
+    AB5 --> PR[Peer Review]
     
-    PR --> PR1[Internal Peer Reviewer<br/>reviews assessment brief]
-    PR1 --> PR2[Complete checklist:<br/>- Briefing sheet<br/>- Compliance<br/>- Instructions clarity<br/>- Criteria clarity<br/>- Task appropriateness<br/>- Special provisions]
-    PR2 --> PR3[Add comments and<br/>recommendations]
-    PR3 --> PR4{Peer Review<br/>Approved?}
-    PR4 -->|No - Needs Changes| AB1
-    PR4 -->|Yes| PR5[Module Leader signs off<br/>Peer Reviewer signs off]
-    PR5 --> PR6[Send to Sample Selection]
-    PR6 --> SS[Sample Selection Page]
+    PR --> PR1[Peer Reviewer evaluates<br/>and completes checklist]
+    PR1 --> PR2[Add comments and
+    recommendations]
+    PR2 --> PR3{Peer Review approved?}
+    PR3 -->|No - needs changes| AB1
+    PR3 -->|Yes| PR4[ML & Reviewer sign off]
+    PR4 --> EndA([End Pre-assessment<br/>Approved & Published])
     
-    SS --> SS1[Course Leader selects<br/>student samples after grading]
-    SS1 --> SS2[Select representative samples:<br/>- 10% of submissions<br/>- Min 5, Max 15<br/>- Include borderline cases]
-    SS2 --> SS3[View student grades<br/>and feedback]
-    SS3 --> SS4{Samples<br/>Selected?}
-    SS4 -->|No| SS1
-    SS4 -->|Yes| SS5[Send to Internal Moderator<br/>📧 Email notification sent]
-    SS5 --> IM[Internal Moderation Page]
+    classDef start fill:#90EE90
+    classDef end fill:#FFB6C1
+    classDef brief fill:#E6F3FF
+    classDef peer fill:#F0E6FF
+    class StartA start
+    class EndA end
+    class AB,AB1,AB2,AB3,AB4,AB5 brief
+    class PR,PR1,PR2,PR3,PR4 peer
+```
+
+```mermaid
+flowchart TD
+    %% Workflow B: Post-assessment (after grading)
+    StartB([Start: Post-assessment]) --> SS[Sample Selection]
     
-    IM --> IM1[Status: Awaiting Internal<br/>Moderation Review]
-    IM1 --> IM2[Internal Moderator<br/>reviews samples]
-    IM2 --> IM3[Reviews grades and<br/>feedback comments]
-    IM3 --> IM4{Clarification<br/>Needed?}
+    SS --> SS1[Course Leader selects
+    samples after grading]
+    SS1 --> SS2[Ensure representative set:
+    10% coverage, min 5, max 15,
+    include borderline]
+    SS2 --> SS3{Samples selected?}
+    SS3 -->|No| SS1
+    SS3 -->|Yes| SS4[Send to Internal Moderator
+    📧 notification]
+    SS4 --> IM[Internal Moderation]
     
-    IM4 -->|Yes| IM5[Request Clarification<br/>from Module Leader]
-    IM5 --> IM6[📧 Email sent to<br/>Module Leader]
-    IM6 --> IM7[Module Leader responds<br/>to clarification request]
-    IM7 --> IM8{Response<br/>Adequate?}
-    IM8 -->|No| IM5
-    IM8 -->|Yes| IM9[Acknowledge response]
-    IM9 --> IM2
+    IM --> IM1[Internal Moderator reviews
+    grades & feedback]
+    IM1 --> IM2{Clarification needed?}
+    IM2 -->|Yes| IM3[Send back to Module Leader
+    📧 notification]
+    IM3 --> IM4[Module Leader responds]
+    IM4 --> IM2
+    IM2 -->|No| IM5[Internal Moderator signs]
+    IM5 --> IM6[Module Leader signs acknowledgement]
+    IM6 --> IM7{Franchise Partner module?}
+    IM7 -->|No| IM8{External moderation required?}
+    IM7 -->|Yes| IMFP[Solent Moderator final
+    compliance check]
+    IMFP -->|Send back| IM3
+    IMFP -->|Approve| IM8{External moderation required?}
     
-    IM4 -->|No| IM10[Complete moderation review:<br/>- Assess grade appropriateness<br/>- Add comments/actions]
-    IM10 --> IM11[Internal Moderator signs]
-    IM11 --> IM12[Module Leader signs<br/>acknowledgement]
-    IM12 --> IM13{Franchise<br/>Partner?}
-    IM13 -->|Yes| IM14[Solent Moderator
-    final compliance check]
-    IM14 -->|Send back| IM5
-    IM14 -->|Approve| IM15{External<br/>Moderation<br/>Required?}
-    IM13 -->|No| IM15
+    IM8 -->|No| EndB([End Post-assessment<br/>Process Complete])
+    IM8 -->|Yes| EE[External Examiner]
+    EE --> EE1[External Examiner reviews
+    samples and answers questions]
+    EE1 --> EE2[Provide recommendations
+    and sign/date]
+    EE2 --> EndB
     
-    IM15 -->|No| End([End - Process Complete])
-    IM15 -->|Yes| IM16[Send to External Examiner<br/>📧 Email notification sent]
-    IM16 --> EE[External Examiner Page]
-    
-    EE --> EE1[External Examiner<br/>receives notification]
-    EE1 --> EE2[View assessment details<br/>and moderated samples]
-    EE2 --> EE3[Review student work<br/>and feedback]
-    EE3 --> EE4[Answer review questions:<br/>1. Assessment alignment<br/>2. Standards consistency<br/>3. Recommendations]
-    EE4 --> EE5[Provide additional comments]
-    EE5 --> EE6[Mark review as complete]
-    EE6 --> EE7[External Examiner signs<br/>and dates]
-    EE7 --> EE8{Review<br/>Complete?}
-    EE8 -->|No| EE4
-    EE8 -->|Yes| EE9[Submit External<br/>Examiner Report]
-    EE9 --> EE10[Download PDF Report]
-    EE10 --> End
-    
-    style Start fill:#90EE90
-    style End fill:#FFB6C1
-    style AB fill:#E6F3FF
-    style PR fill:#E6F3FF
-    style SS fill:#FFF9E6
-    style IM fill:#FFE6F0
-    style EE fill:#F0E6FF
-    style IM5 fill:#FFE6E6
-    style IM6 fill:#FFE6E6
-    style IM7 fill:#FFE6E6
+    classDef start fill:#90EE90
+    classDef end fill:#FFB6C1
+    classDef sample fill:#FFF9E6
+    classDef mod fill:#FFE6F0
+    classDef external fill:#F0E6FF
+    classDef warn fill:#FFE6E6
+    class StartB start
+    class EndB end
+    class SS,SS1,SS2,SS3,SS4 sample
+    class IM,IM1,IM2,IM3,IM4,IM5,IM6,IM7,IMFP mod
+    class EE,EE1,EE2 external
+    class IM3 warn
 ```
 ## Workflow Stages Overview
 
@@ -99,7 +103,7 @@ flowchart TD
 - Send to Internal Moderator with email notification
 
 ### 4. **Internal Moderation** (Internal Moderator + Module Leader + Solent Moderator)
-- Internal Moderator reviews selected samples
+- Internal Moderator reviews selected samples (post-grading)
 - Can request clarification from Module Leader (iterative loop)
 - Module Leader responds to clarification requests
 - Complete moderation review with sign-offs
