@@ -53,7 +53,7 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
 
   const handleSendToExternalExaminer = () => {
     // Check if Solent Moderator sign-off is required but not completed
-    if (formData.isFranchisePartner && !formData.solentModeratorCompleted) {
+    if (assessmentData.isFranchisePartner && !assessmentData.solentModeratorCompleted) {
       alert('Cannot send to External Examiner: Solent Moderator Franchise Partner sign-off is required but has not been completed. Please ensure the Solent Moderator completes their review and approval.');
       return;
     }
@@ -372,15 +372,15 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
                       />
                     </td>
                   </tr>
-                  {formData.isFranchisePartner && (
-                  <tr className={formData.solentModeratorCompleted ? "bg-green-50" : "bg-yellow-100"}>
-                    <td className={`border border-gray-400 p-2 font-semibold ${formData.isFranchisePartner ? (formData.solentModeratorCompleted ? "text-green-900" : "text-yellow-900") : "text-gray-500"}`}>
-                      {formData.solentModeratorCompleted ? "✓ Signed Solent Moderator Franchise Partners" : "⭐ Signed Solent Moderator Franchise Partners ONLY"}
+                  {assessmentData.isFranchisePartner && (
+                  <tr className={assessmentData.solentModeratorCompleted ? "bg-green-50" : "bg-yellow-100"}>
+                    <td className={`border border-gray-400 p-2 font-semibold ${assessmentData.solentModeratorCompleted ? "text-green-900" : "text-yellow-900"}`}>
+                      {assessmentData.solentModeratorCompleted ? "✓ Signed Solent Moderator Franchise Partners" : "⭐ Signed Solent Moderator Franchise Partners ONLY"}
                     </td>
                     <td className="border border-gray-400 p-2">
                       <input
                         type="text"
-                        value={formData.franchisePartnerName}
+                        value={assessmentData.franchisePartnerName || ""}
                         className="w-full p-2 border border-gray-300 bg-gray-100"
                         readOnly
                       />
@@ -388,7 +388,7 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
                     <td className="border border-gray-400 p-2">
                       <input
                         type="text"
-                        value={formData.franchisePartnerDate}
+                        value={assessmentData.franchisePartnerDate || ""}
                         className="w-full p-2 border border-gray-300 bg-gray-100"
                         readOnly
                       />
@@ -402,7 +402,7 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
 
           {/* Action Button */}
           <div className="border-t-2 border-gray-300 pt-6">
-            {formData.isFranchisePartner && !formData.solentModeratorCompleted && (
+            {assessmentData.isFranchisePartner && !assessmentData.solentModeratorCompleted && (
               <div className="mb-4 p-4 bg-yellow-50 border border-yellow-300 rounded">
                 <p className="text-sm text-yellow-800">
                   <strong>⚠️ Pending Solent Moderator Approval:</strong> This is a Franchise Partner module. The Solent Moderator must complete their compliance check and sign-off before you can send this to the External Examiner.
@@ -413,9 +413,9 @@ export function InternalModerationMLSignedOff({ onNavigate, assessmentData, upda
               <div className="text-center">
                 <button
                   onClick={handleSendToExternalExaminer}
-                  disabled={formData.isFranchisePartner && !formData.solentModeratorCompleted}
+                  disabled={assessmentData.isFranchisePartner && !assessmentData.solentModeratorCompleted}
                   className={`flex items-center gap-2 px-8 py-3 rounded transition-colors ${
-                    formData.isFranchisePartner && !formData.solentModeratorCompleted
+                    assessmentData.isFranchisePartner && !assessmentData.solentModeratorCompleted
                       ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
                       : 'bg-green-600 text-white hover:bg-green-700'
                   }`}
