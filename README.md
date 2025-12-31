@@ -47,24 +47,24 @@ This workflow occurs **after students have completed the semester, submitted wor
 
 ```mermaid
 flowchart TD
-    Start([Start: Module Leader<br/>Planning Assessment]) --> A1[Page 1: Assessment Brief Creation]
+    Start([Start: Module Leader<br/>Planning Assessment]) --> A1[Page 1:<br/>Assessment Brief Creation]
     
     A1 --> A2{ML Submits<br/>Brief for<br/>Peer Review?}
     A2 -->|No - Continue Editing| A1
-    A2 -->|Yes - Ready for Review| B1[Page 2: Peer Review]
+    A2 -->|Yes - Ready for Review| B1[Page 2:<br/>Peer Review]
     
     %% PEER REVIEW WORKFLOW
     B1 --> B2[View: Peer Reviewer View]
     B2 --> B3{Peer Reviewer<br/>Decision}
     
-    B3 -->|Send Back for Amendment| B4[View: ML - Sent Back for Amendment]
+    B3 -->|Send Back for Amendment| B4[View: ML -<br/>Sent Back for Amendment]
     B4 --> B5[ML Reviews Peer Feedback]
     B5 --> B6[ML Makes Amendments to Brief]
     B6 --> B7[ML Resubmits Amended Brief]
-    B7 --> B8[View: ML - Resubmitted]
+    B7 --> B8[View: ML -<br/>Resubmitted]
     B8 --> B2
     
-    B3 -->|Approve Brief| B9[View: ML - Signed Off]
+    B3 -->|Approve Brief| B9[View: ML -<br/>Signed Off]
     B9 --> End1([Assessment Brief Approved<br/>Ready for Semester])
     
     End1 -.->|Semester Happens| Students[Students Complete Semester<br/>Submit Work<br/>Work is Marked]
@@ -153,7 +153,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    Start([Start: Semester Complete<br/>All Work Marked]) --> C1[Page 3: Sample Selection]
+    Start([Start: Semester Complete<br/>All Work Marked]) --> C1[Page 3:<br/>Sample Selection]
     
     %% SAMPLE SELECTION
     C1 --> C2[ML Reviews All Marked Work]
@@ -161,36 +161,36 @@ flowchart TD
     C3 --> C4[ML Assigns Internal Moderator]
     C4 --> C5{ML Submits<br/>for Internal<br/>Moderation?}
     C5 -->|No - Continue Selecting| C1
-    C5 -->|Yes - Ready for Moderation| D1[Page 4: Internal Moderation]
+    C5 -->|Yes - Ready for Moderation| D1[Page 4:<br/>Internal Moderation]
     
     %% INTERNAL MODERATION WORKFLOW
     D1 --> D2[View: Internal Moderator View]
     D2 --> D3[IM Reviews Sample Work & Marking]
     D3 --> D4{IM Decision}
     
-    D4 -->|Request Clarification| D5[IM Submits Questions about Marking]
-    D5 --> D6[View: ML - Sent Back for Clarification]
-    D6 --> D7[ML Provides Clarification Response]
+    D4 -->|Request Clarification| D5[IM Submits Questions<br/>about Marking]
+    D5 --> D6[View: ML -<br/>Sent Back for Clarification]
+    D6 --> D7[ML Provides<br/>Clarification Response]
     D7 --> D8{ML Submits<br/>Clarification?}
     D8 -->|No - Continue Editing| D6
     D8 -->|Yes - Submitted| D2
     
     D4 -->|Approve Marking Standards| D9[IM Signs Off]
-    D9 --> D10[View: ML - Signed Off]
+    D9 --> D10[View: ML -<br/>Signed Off]
     D10 --> D11[ML Reviews IM Approval]
     D11 --> D12[ML Countersigns]
-    D12 --> E1[Page 5: External Examiner]
+    D12 --> E1[Page 5:<br/>External Examiner]
     
     %% EXTERNAL EXAMINER WORKFLOW
-    E1 --> E2[View: External Examiner View]
-    E2 --> E3[EE Reviews Student Sample Work]
-    E3 --> E4[EE Reviews Marking & Feedback]
-    E4 --> E5[EE Reviews Internal Moderation]
-    E5 --> E6[EE Answers Assessment Questions]
-    E6 --> E7[EE Provides Feedback Comments]
+    E1 --> E2[View:<br/>External Examiner View]
+    E2 --> E3[EE Reviews<br/>Student Sample Work]
+    E3 --> E4[EE Reviews<br/>Marking & Feedback]
+    E4 --> E5[EE Reviews<br/>Internal Moderation]
+    E5 --> E6[EE Answers<br/>Assessment Questions]
+    E6 --> E7[EE Provides<br/>Feedback Comments]
     E7 --> E8{EE Completes<br/>& Submits<br/>Report?}
     E8 -->|No - Continue Reviewing| E2
-    E8 -->|Yes - Submit Report| E9[View: Course Leader - Completed Report]
+    E8 -->|Yes - Submit Report| E9[View: Course Leader -<br/>Completed Report]
     
     E9 --> E10[CL Reviews Complete Report]
     E10 --> E11[CL Downloads PDF]
