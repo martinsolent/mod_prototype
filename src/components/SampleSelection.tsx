@@ -124,7 +124,7 @@ export function SampleSelection({ onNavigate, assessmentData, updateAssessmentDa
           {/* Note about Sample Selection */}
           <div className="mb-8 p-4 bg-blue-50 border-l-4 border-blue-600 rounded">
             <p className="text-sm text-blue-800">
-              <strong>Note:</strong> This is for course leader sample selection following grading. 
+              <strong>Note:</strong> This is for module leader sample selection following grading. 
               Please select representative student samples before sending to the Internal Moderator for review.
             </p>
           </div>

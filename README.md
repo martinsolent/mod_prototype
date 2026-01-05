@@ -190,7 +190,7 @@ flowchart TD
     E6 --> E7[EE Provides<br/>Feedback Comments]
     E7 --> E8{EE Completes<br/>& Submits<br/>Report?}
     E8 -->|No - Continue Reviewing| E2
-    E8 -->|Yes - Submit Report| E9[View: Course Leader -<br/>Completed Report]
+    E8 -->|Yes - Submit Report| E9[View: Module Leader -<br/>Completed Report]
     
     E9 --> E10[CL Reviews Complete Report]
     E10 --> E11[CL Downloads PDF]
@@ -278,8 +278,8 @@ flowchart TD
   - Provide comprehensive feedback
   - Sign and submit report
 
-**5.2 Course Leader: Completed Report** (Blue/Green Theme)
-- **Actor:** Course Leader / Module Leader
+**5.2 Module Leader: Completed Report** (Blue/Green Theme)
+- **Actor:** Module Leader
 - **Timing:** After EE submits report
 - **Purpose:** Final review and acknowledgment
 - **Key Actions:**
@@ -418,7 +418,7 @@ graph TB
     ML_B[👤 Module Leader<br/>Post-Assessment]
     IM[👤 Internal Moderator]
     EE[👤 External Examiner]
-    CL[👤 Course Leader]
+    ML[👤 Module Leader]
     
     %% Module Leader connections - Workflow B
     ML_B -.->|performs| UC12
@@ -450,7 +450,7 @@ graph TB
     EE -.->|performs| UC31
     EE -.->|performs| UC33
     
-    %% Course Leader connections
+    %% Module Leader connections
     CL -.->|performs| UC28
     CL -.->|performs| UC29
     CL -.->|performs| UC30
@@ -488,7 +488,7 @@ graph TB
 | **Focus** | Assessment design and appropriateness | Marking quality and standards |
 | **Input** | Assessment brief document | Marked student work samples |
 | **Primary Quality Check** | Peer review of assessment design | Internal & external moderation of marking |
-| **Actors Involved** | Module Leader, Peer Reviewer | Module Leader, Internal Moderator, External Examiner, Course Leader |
+| **Actors Involved** | Module Leader, Peer Reviewer | Module Leader, Internal Moderator, External Examiner |
 | **Outcome** | Approved assessment ready for use | Quality-assured marking with external validation |
 | **Frequency** | Once before semester | Once after marking complete |
 
@@ -518,7 +518,7 @@ Proceed to External Examination
 ```
 External Examiner → Review Work & Moderation → 
 Answer Questions → Provide Feedback → Submit Report → 
-Course Leader → Review → Acknowledge → 
+Module Leader → Review → Acknowledge → 
 Process Complete
 ```
 

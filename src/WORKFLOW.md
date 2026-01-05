@@ -170,7 +170,7 @@ flowchart TD
     E6 --> E7[EE Provides Feedback Comments]
     E7 --> E8{EE Completes<br/>& Submits<br/>Report?}
     E8 -->|No - Continue Reviewing| E2
-    E8 -->|Yes - Submit Report| E9[View: Course Leader - Completed Report]
+    E8 -->|Yes - Submit Report| E9[View: Module Leader - Completed Report]
     
     E9 --> E10[CL Reviews Complete Report]
     E10 --> E11[CL Downloads PDF]
@@ -258,8 +258,8 @@ flowchart TD
   - Provide comprehensive feedback
   - Sign and submit report
 
-**5.2 Course Leader: Completed Report** (Blue/Green Theme)
-- **Actor:** Course Leader / Module Leader
+**5.2 Module Leader: Completed Report** (Blue/Green Theme)
+- **Actor:** Module Leader
 - **Timing:** After EE submits report
 - **Purpose:** Final review and acknowledgment
 - **Key Actions:**
@@ -422,7 +422,7 @@ graph TB
     ML_B[👤 Module Leader<br/>Post-Assessment]
     IM[👤 Internal Moderator]
     EE[👤 External Examiner]
-    CL[👤 Course Leader]
+    ML[👤 Module Leader]
     
     %% Module Leader connections - Workflow B
     ML_B -.->|performs| UC12
@@ -454,7 +454,7 @@ graph TB
     EE -.->|performs| UC31
     EE -.->|performs| UC33
     
-    %% Course Leader connections
+    %% Module Leader connections
     CL -.->|performs| UC28
     CL -.->|performs| UC29
     CL -.->|performs| UC30
@@ -480,7 +480,7 @@ graph TB
 | **Peer Reviewer** | • Review assessment design<br>• Provide feedback on brief<br>• Approve or request amendments<br>• Review resubmissions | *Not involved in Workflow B* |
 | **Internal Moderator** | *Not involved in Workflow A* | • Review marked student samples<br>• Assess marking consistency<br>• Request clarifications on grading<br>• Sign off moderation |
 | **External Examiner** | *Not involved in Workflow A* | • Review marked work samples<br>• Review internal moderation<br>• Validate academic standards<br>• Submit final report |
-| **Course Leader** | *Not involved in Workflow A* | • Review completed external report<br>• Download complete documentation<br>• Acknowledge receipt<br>• Close quality assurance process |
+| **Module Leader** | *Not involved in Workflow A* | • Review completed external report<br>• Download complete documentation<br>• Acknowledge receipt<br>• Close quality assurance process |
 
 ---
 
@@ -492,7 +492,7 @@ graph TB
 | **Focus** | Assessment design and appropriateness | Marking quality and standards |
 | **Input** | Assessment brief document | Marked student work samples |
 | **Primary Quality Check** | Peer review of assessment design | Internal & external moderation of marking |
-| **Actors Involved** | Module Leader, Peer Reviewer | Module Leader, Internal Moderator, External Examiner, Course Leader |
+| **Actors Involved** | Module Leader, Peer Reviewer | Module Leader, Internal Moderator, External Examiner |
 | **Outcome** | Approved assessment ready for use | Quality-assured marking with external validation |
 | **Pages Used** | Pages 1-2 (Brief Creation, Peer Review) | Pages 3-5 (Sample Selection, Internal Moderation, External Examiner) |
 | **Duration** | Typically 1-2 weeks | Typically 3-4 weeks |
@@ -524,7 +524,7 @@ Proceed to External Examination
 ```
 External Examiner → Review Work & Moderation → 
 Answer Questions → Provide Feedback → Submit Report → 
-Course Leader → Review → Acknowledge → 
+Module Leader → Review → Acknowledge → 
 Process Complete
 ```
 
@@ -550,7 +550,7 @@ Process Complete
 ### Workflow B: Post-Assessment
 - **Pages:** 3 (Sample Selection, Internal Moderation, External Examiner)
 - **Views:** 8 (including all moderation and examiner views)
-- **Actors:** 4 (Module Leader, Internal Moderator, External Examiner, Course Leader)
+- **Actors:** 3 (Module Leader, Internal Moderator, External Examiner)
 - **Use Cases:** 23
 - **Decision Points:** 4
 - **Feedback Loops:** 1 (Internal Moderation loop)

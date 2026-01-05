@@ -33,7 +33,7 @@ flowchart TD
     %% Workflow B: Post-assessment (after grading)
     StartB([Start: Post-assessment]) --> SS[Sample Selection]
     
-    SS --> SS1[Course Leader selects
+    SS --> SS1[Module Leader selects
     samples after grading]
     SS1 --> SS2[10% of submitted work<br/>Min 5, Max 15<br/>Select bottom, middle, top]
     SS2 --> SS3{Samples selected?}
@@ -87,7 +87,7 @@ flowchart TD
 - Provide feedback and recommendations
 - Sign off (both reviewer and module leader)
 
-### 3. **Sample Selection** (Course Leader)
+### 3. **Sample Selection** (Module Leader)
 - Select representative student samples after grading
 - Ensure 10% coverage with borderline cases
 - Review is prepared for Internal Moderator

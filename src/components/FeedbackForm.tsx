@@ -132,7 +132,7 @@ export function FeedbackForm({ onNavigate, assessmentData, updateAssessmentData 
               onClick={() => setCurrentView('course-leader')}
               className="px-4 py-2 rounded transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300"
             >
-              Course Leader: Completed Report
+              Module Leader: Completed Report
             </button>
           </div>
         </div>

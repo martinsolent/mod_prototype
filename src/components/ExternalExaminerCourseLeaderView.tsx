@@ -109,7 +109,7 @@ export function ExternalExaminerCourseLeaderView({ onNavigate, assessmentData, u
             <button
               className="px-4 py-2 rounded transition-colors bg-blue-600 text-white"
             >
-              Course Leader: Completed Report
+              Module Leader: Completed Report
             </button>
           </div>
         </div>
