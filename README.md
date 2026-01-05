@@ -13,9 +13,6 @@
 
   [Link to (static) Prototype](https://martinsolent.github.io/mod_prototype/)
 
-  <br>
-
-  [Workflow Overview](https://github.com/martinsolent/mod_prototype)
 
 <!---
   This is a code bundle for Copy Design to Figma. The original project is available at https://www.figma.com/design/LopJqGSBbtyi6pGRIXJQWf/Copy-Design-to-Figma.
