@@ -3,9 +3,11 @@
 
  This is a proposal prototype to streamline academic quality assurance through a multi-stage assessment moderation process. Guides module leaders, peer reviewers, internal moderators, and external examiners through assessment brief creation, peer review, sample selection, internal moderation, and external examination. Features role-based workflows, real-time collaboration tracking, sign-off mechanisms, and email notifications at key hand-off points.
 
- <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%">
-	<iframe src="https://solent.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=a59a40fb-aa6b-44bc-bd65-b3c900f10d16&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=true&interactivity=all" style="border: 1px solid #464646; position: absolute; top: 0; left: 0; width: 100%; height: 100%; box-sizing: border-box;" allowfullscreen allow="autoplay" aria-label="Panopto Embedded Video Player" aria-description="SOL Moderation Workflow"></iframe>
-</div>
+## 📹 Video Walkthrough
+
+**[▶️ Watch the SOL Moderation Workflow Video](https://solent.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=a59a40fb-aa6b-44bc-bd65-b3c900f10d16)**
+
+> Click the link above to view a comprehensive walkthrough of the moderation workflow process.
 
  <br>
 
